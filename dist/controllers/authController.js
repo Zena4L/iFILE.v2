@@ -35,8 +35,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.strictTo = exports.protect = exports.logout = exports.login = exports.signUp = void 0;
+exports.updatePassword = exports.isLoggedIn = exports.resetPassword = exports.forgotPassword = exports.strictTo = exports.protect = exports.logout = exports.login = exports.signUp = void 0;
 const jwt = __importStar(require("jsonwebtoken"));
+const crypto = __importStar(require("crypto"));
 const userModel_1 = require("../models/userModel");
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
@@ -116,4 +117,91 @@ const strictTo = (...roles) => (req, res, next) => {
     next();
 };
 exports.strictTo = strictTo;
+exports.forgotPassword = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    // get email from user
+    const { email } = req.body;
+    const user = yield userModel_1.User.findOne({ email });
+    if (!user)
+        next(new AppError_1.default('No user with this email', 404));
+    const resetToken = user === null || user === void 0 ? void 0 : user.createResetToken();
+    yield (user === null || user === void 0 ? void 0 : user.save({ validateBeforeSave: false }));
+    try {
+        const resetURL = `${req.protocol}://${req.get('host')}/api/user/resetPassword/${resetToken}`;
+        // await new Email(user, resetURL).sendResetPassword();
+        res.status(200).json({
+            status: 'success',
+            message: 'token sent successfully!',
+        });
+    }
+    catch (err) {
+        if (user) {
+            user.passwordResetToken = undefined;
+            user.passwordResetExpires = undefined;
+            yield user.save({ validateBeforeSave: false });
+        }
+        return next(new AppError_1.default('There was an error sending the email. Try again later!', 404));
+    }
+}));
+exports.resetPassword = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //get token from url
+    const hashedToken = crypto
+        .createHash('sha256')
+        .update(req.params.token)
+        .digest('hex');
+    const user = yield userModel_1.User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: new Date(Date.now()) },
+    });
+    if (!user) {
+        next(new AppError_1.default('Token is invalid or has expire', 400));
+    }
+    else {
+        const { password, passwordConfirm } = req.body;
+        user.password = password;
+        user.passwordConfirm = passwordConfirm;
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        yield user.save();
+    }
+    if (user) {
+        const token = new Token_1.default(user, res, 200);
+        token.createSendToken();
+    }
+}));
+exports.isLoggedIn = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.cookies.jwt) {
+        try {
+            const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET || '');
+            const currentUser = yield userModel_1.User.findById(decoded.id);
+            if (!currentUser) {
+                return next(new AppError_1.default('Please loggin in with correct password or email', 401));
+            }
+            if (currentUser.changePasswordAfter(decoded.iat)) {
+                next(new AppError_1.default('User recently changed password', 401));
+            }
+            req.user = currentUser;
+            res.locals.user = currentUser;
+            return next();
+        }
+        catch (err) {
+            return next(err);
+        }
+    }
+    next();
+}));
+exports.updatePassword = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const user = yield userModel_1.User.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id).select('+password');
+    if (!(yield (user === null || user === void 0 ? void 0 : user.comparePassword(req.body.passwordCurrent, user.password)))) {
+        return next(new AppError_1.default('Your password is incorrect', 401));
+    }
+    if (user) {
+        const { password, passwordConfirm } = req.body;
+        user.password = password;
+        user.passwordConfirm = passwordConfirm;
+        yield user.save();
+        const token = new Token_1.default(user, res, 200);
+        token.createSendToken();
+    }
+}));
 //# sourceMappingURL=authController.js.map

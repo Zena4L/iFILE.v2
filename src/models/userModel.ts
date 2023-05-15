@@ -10,12 +10,13 @@ export interface IUser extends Document {
     passwordConfirm: string;
     role: string;
     passwordChangedAt: Date;
-    passwordResetToken: String;
-    passwordResetExpires: Date;
+    passwordResetToken: String | undefined;
+    passwordResetExpires: Date | undefined;
     active: boolean;
 
     comparePassword(inputPassword:string,userPassword:string):Promise<boolean> ;
     changePasswordAfter(JWTTimeStamp: number): boolean;
+    createResetToken():string;
 }
 
 const userSchema = new Schema<IUser>({

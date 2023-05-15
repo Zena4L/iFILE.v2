@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import * as crypto from 'crypto'
-import { RequestHandler , Request} from 'express';
+import { RequestHandler , Request, Response} from 'express';
 import {User, IUser} from "../models/userModel";
 import AppError from "../utils/AppError";
 import catchAsync from "../utils/CatchAsync";
@@ -9,6 +9,13 @@ import Email from "../utils/Email";
 import Tokinazation from '../utils/Token';
 import {SignupRequest, loginRequest , decodedToken} from '../utils/Interfaces'
 import { CookieOptions } from 'express';
+
+interface userRequest extends Request {
+  user?: IUser;
+}
+interface userResponse extends Response {
+  user?: IUser;
+}
 
 export const signUp: RequestHandler = catchAsync(async (req, res, next) => {
     const { name, email, password, passwordConfirm } = req.body as SignupRequest;
@@ -60,11 +67,9 @@ export const logout:RequestHandler = (req, res) => {
   };
  
 
-  interface userRequest extends Request {
-    user?: IUser;
-  }
+ 
 
-export const protect:RequestHandler = catchAsync(async (req:userRequest, res, next) => {
+export const protect:RequestHandler = catchAsync(async (req:userRequest, res:userResponse, next) => {
     //get token from header
     let token = ' ';
     if (
@@ -87,7 +92,7 @@ export const protect:RequestHandler = catchAsync(async (req:userRequest, res, ne
       next(new AppError('User recently changed password', 401));
     }
     req.user = currentUser;
-    res.locals.user = currentUser;
+    res.locals.user = currentUser as IUser;
     next();
   });
   
@@ -100,4 +105,97 @@ export const protect:RequestHandler = catchAsync(async (req:userRequest, res, ne
     next();
   };
 
- 
+export const forgotPassword:RequestHandler = catchAsync(async (req, res, next) => {
+    // get email from user
+    const {email} = req.body as loginRequest
+    const user = await User.findOne({ email });
+  
+    if (!user) next(new AppError('No user with this email', 404));
+    const resetToken = user?.createResetToken();
+    await user?.save({ validateBeforeSave: false });
+  
+    try {
+      const resetURL = `${req.protocol}://${req.get(
+        'host'
+      )}/api/user/resetPassword/${resetToken}`;
+  
+      // await new Email(user, resetURL).sendResetPassword();
+      res.status(200).json({
+        status: 'success',
+        message: 'token sent successfully!',
+      });
+    } catch (err) {
+      if(user){
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+      }
+      return next(new AppError('There was an error sending the email. Try again later!',404))
+    }
+  });
+
+export const resetPassword:RequestHandler = catchAsync(async (req, res, next) => {
+    //get token from url
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+  
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: new Date(Date.now() )},
+    });
+    if (!user) {
+      next(new AppError('Token is invalid or has expire', 400));
+    }else{
+      const { password, passwordConfirm } = req.body as SignupRequest;
+      user.password = password;
+      user.passwordConfirm = passwordConfirm;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      await user.save();
+    }
+    if(user){
+      const token = new Tokinazation(user,res,200);
+      token.createSendToken();
+    }
+  });
+
+export const isLoggedIn:RequestHandler = catchAsync(async (req:userRequest, res:userResponse, next) => {
+    if (req.cookies.jwt) {
+      try {
+        const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET || '') as decodedToken
+        const currentUser = await User.findById(decoded.id);
+        if (!currentUser) {
+          return next(new AppError('Please loggin in with correct password or email',401));
+        }
+  
+        if (currentUser.changePasswordAfter(decoded.iat)) {
+          next(new AppError('User recently changed password', 401));
+        }
+  
+        req.user = currentUser;
+        res.locals.user = currentUser as IUser;
+        return next();
+      } catch (err) {
+        return next(err);
+      }
+    }
+    next();
+  });
+
+export const updatePassword:RequestHandler = catchAsync(async (req:userRequest, res, next) => {
+    const user = await User.findById(req.user?._id).select('+password');
+    if (!(await user?.comparePassword(req.body.passwordCurrent, user.password))) {
+      return next(new AppError('Your password is incorrect', 401));
+    }
+  
+    if(user){
+      const { password, passwordConfirm } = req.body as SignupRequest;
+      user.password = password;
+      user.passwordConfirm = passwordConfirm;
+      await user.save(); 
+      const token = new Tokinazation(user,res,200);
+      token.createSendToken();
+    }
+  });
