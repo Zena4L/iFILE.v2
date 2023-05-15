@@ -9,5 +9,5 @@ app.use(morgan('dev'));
 app.use(json())
 app.use(cookieparser())
 
-app.use('/users',userRouter)
+app.use('/v1/api/users',userRouter)
 export default app;
