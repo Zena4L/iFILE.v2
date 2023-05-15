@@ -14,8 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signUp = void 0;
 const userModel_1 = require("../models/userModel");
+const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 const Token_1 = __importDefault(require("../utils/Token"));
-const signUp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.signUp = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, passwordConfirm } = req.body;
     const newUser = yield userModel_1.User.create({
         name,
@@ -28,6 +29,5 @@ const signUp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     // await sendEmail.sendWelcome();
     const token = new Token_1.default(newUser, res, 201);
     token.createSendToken();
-});
-exports.signUp = signUp;
+}));
 //# sourceMappingURL=authController.js.map
