@@ -116,7 +116,7 @@ userSchema.methods.comparePassword = function (inputPassword, userPassword) {
 userSchema.methods.changePasswordAfter = function (JWTTimeStamp) {
     if (this.passwordChangedAt) {
         const changeTimeStamp = this.passwordChangedAt.getTime() / 1000;
-        return JWTTimeStamp.getTime() < changeTimeStamp;
+        return JWTTimeStamp < changeTimeStamp;
     }
     return false;
 };
