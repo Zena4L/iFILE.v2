@@ -34,6 +34,6 @@ const app = (0, express_1.default)();
 app.use((0, morgan_1.default)('dev'));
 app.use((0, express_1.json)());
 app.use((0, cookie_parser_1.default)());
-app.use('/users', userRoutes_1.default);
+app.use('/v1/api/users', userRoutes_1.default);
 exports.default = app;
 //# sourceMappingURL=app.js.map

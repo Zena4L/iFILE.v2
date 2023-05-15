@@ -8,28 +8,6 @@ import catchAsync from "../utils/CatchAsync";
 import Email from "../utils/Email";
 import Tokinazation from '../utils/Token';
 
-// export const signUp = catchAsync(async (req, res, next) => {
-//     const newUser = await User.create({
-//       name: req.body.name,
-//       email: req.body.email,
-//       password: req.body.password,
-//       passwordConfirm: req.body.passwordConfirm,
-//       userName: req.body.name.split(' ')[0],
-//     });
-  
-//     // const url = `${req.protocol}://${req.get('host')}/`;
-//     // const email = new Email(newUser,url);
-//     // await email.sendWelcome();
-//     // createSendToken(newUser, res, 201);
-
-//     // const token = new Tokinazation(newUser,res,201);
-//     // token.createSendToken();
-//     res.status(200).json({
-//         status:'ok'
-//     })
-
-//   });
-
 interface SignupRequest {
     name: string;
     email: string;
@@ -37,7 +15,7 @@ interface SignupRequest {
     passwordConfirm: string;
   }
   
-  export const signUp: RequestHandler = async (req, res, next) => {
+  export const signUp: RequestHandler = catchAsync(async (req, res, next) => {
     const { name, email, password, passwordConfirm } = req.body as SignupRequest;
   
     const newUser = await User.create({
@@ -54,5 +32,5 @@ interface SignupRequest {
     const token = new Tokinazation(newUser,res,201);
     token.createSendToken();
     
-  };
+  });
   
