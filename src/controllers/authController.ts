@@ -7,14 +7,8 @@ import AppError from "../utils/AppError";
 import catchAsync from "../utils/CatchAsync";
 import Email from "../utils/Email";
 import Tokinazation from '../utils/Token';
+import {SignupRequest} from '../utils/Interfaces'
 
-interface SignupRequest {
-    name: string;
-    email: string;
-    password: string;
-    passwordConfirm: string;
-  }
-  
   export const signUp: RequestHandler = catchAsync(async (req, res, next) => {
     const { name, email, password, passwordConfirm } = req.body as SignupRequest;
   
