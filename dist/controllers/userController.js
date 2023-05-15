@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllUser = void 0;
-const userModel_1 = __importDefault(require("../models/userModel"));
+const userModel_1 = require("../models/userModel");
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 exports.getAllUser = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield userModel_1.default.find().select('-password');
+    const users = yield userModel_1.User.find().select('-password');
     if (!users)
         next(new AppError_1.default('No users found', 404));
     res.status(200).json({

@@ -35,6 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = void 0;
 const mongoose_1 = require("mongoose");
 const validator_1 = __importDefault(require("validator"));
 const bcrypt_1 = require("bcrypt");
@@ -44,7 +45,6 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: [true, 'User must have a name'],
     },
-    userName: String,
     email: {
         type: String,
         required: [true, 'User must have email'],
@@ -129,6 +129,6 @@ userSchema.methods.createResetToken = function () {
     this.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000);
     return resetToken;
 };
-const User = (0, mongoose_1.model)('User', userSchema);
-exports.default = User;
+exports.User = (0, mongoose_1.model)('User', userSchema);
+// export default User;
 //# sourceMappingURL=userModel.js.map
