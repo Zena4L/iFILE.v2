@@ -7,7 +7,7 @@
     - POST login [endpoint]({{url}}v1/api/users/login)
     - POST forgot password [endpoint]({{url}}v1/api/users/forgotpassword)
     - POST reset password [endpoint]({{url}}v1/api/users/resetpassword:token)
-![snippet](Dev-Data/img/snippet.png)
+<!-- ![snippet](Dev-Data/img/snippet.png) -->
 2. User
     - GET all Users [endpoint]({{url}}v1/api/users/)
     - GET a User [endpoint]({{url}}v1/api/users/id)
