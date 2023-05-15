@@ -4,7 +4,10 @@ const express_1 = require("express");
 const userController_1 = require("../controllers/userController");
 const authController_1 = require("../controllers/authController");
 const router = (0, express_1.Router)();
-router.get('/', userController_1.getAllUser);
 router.post('/signup', authController_1.signUp);
+router.post('/login', authController_1.protect, authController_1.login);
+router.get('/logout', authController_1.logout);
+// user routes
+router.get('/', authController_1.protect, (0, authController_1.strictTo)('admin'), userController_1.getAllUser);
 exports.default = router;
 //# sourceMappingURL=userRoutes.js.map

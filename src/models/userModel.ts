@@ -13,6 +13,9 @@ export interface IUser extends Document {
     passwordResetToken: String;
     passwordResetExpires: Date;
     active: boolean;
+
+    comparePassword(inputPassword:string,userPassword:string):Promise<boolean> ;
+    changePasswordAfter(JWTTimeStamp: number): boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -87,10 +90,10 @@ userSchema.methods.comparePassword = async function (
   ): Promise<boolean> {
     return await compare(inputPassword, userPassword);
   };
-userSchema.methods.changePasswordAfter = function (JWTTimeStamp: Date) {
+userSchema.methods.changePasswordAfter = function (JWTTimeStamp: number) {
     if (this.passwordChangedAt) {
       const changeTimeStamp = this.passwordChangedAt.getTime() / 1000;
-      return JWTTimeStamp.getTime() < changeTimeStamp;
+      return JWTTimeStamp < changeTimeStamp;
     }
     return false;
   };
