@@ -1,5 +1,4 @@
-import { RequestHandler } from "express";
-import User from "../models/userModel";
+import {User} from "../models/userModel";
 import AppError from "../utils/AppError";
 import catchAsync from "../utils/CatchAsync";
 

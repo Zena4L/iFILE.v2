@@ -3,9 +3,8 @@ import validator from 'validator';
 import {hash,compare} from 'bcrypt';
 import * as crypto from "crypto";
 
-interface IUser extends Document {
+export interface IUser extends Document {
     name: string;
-    userName: string;
     email: string;
     password: string;
     passwordConfirm: string;
@@ -21,7 +20,6 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: [true, 'User must have a name'],
       },
-      userName: String,
       email: {
         type: String,
         required: [true, 'User must have email'],
@@ -107,5 +105,5 @@ userSchema.methods.createResetToken = function () {
     return resetToken;
   };
 
-const User = model<IUser>('User',userSchema);
-export default User;
+export const User = model<IUser>('User',userSchema);
+// export default User;
