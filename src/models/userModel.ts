@@ -110,4 +110,3 @@ userSchema.methods.createResetToken = function () {
   };
 
 export const User = model<IUser>('User',userSchema);
-// export default User;
