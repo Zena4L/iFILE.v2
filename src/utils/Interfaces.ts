@@ -14,3 +14,6 @@ export interface decodedToken {
   iat: number;
   exp: number;
 }
+export interface Obj {
+  [key: string]: string;
+}
