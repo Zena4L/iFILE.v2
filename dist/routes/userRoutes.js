@@ -12,5 +12,8 @@ router.patch('/resetpassword/:token', authController_1.resetPassword);
 router.patch('/updatepassword', authController_1.protect, authController_1.updatePassword);
 // user routes
 router.get('/', authController_1.protect, (0, authController_1.strictTo)('admin'), userController_1.getAllUser);
+router.get('/:id', authController_1.protect, (0, authController_1.strictTo)('admin'), userController_1.getUser);
+router.patch('/updateme', authController_1.protect, userController_1.updateMe);
+router.delete('/deleteme', authController_1.protect, userController_1.deleteMe);
 exports.default = router;
 //# sourceMappingURL=userRoutes.js.map

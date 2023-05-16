@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getAllUser} from '../controllers/userController';
+import {deleteMe, getAllUser,getUser,updateMe} from '../controllers/userController';
 import { signUp, 
     login,
     logout, 
@@ -23,5 +23,9 @@ router.patch('/updatepassword',protect,updatePassword);
 
 // user routes
 router.get('/',protect,strictTo('admin'),getAllUser);
+router.get('/:id',protect,strictTo('admin'),getUser);
+router.patch('/updateme',protect,updateMe);
+router.delete('/deleteme',protect,deleteMe);
+
 
 export default router;
