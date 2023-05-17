@@ -12,58 +12,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteFile = exports.getFile = exports.getAllFiles = exports.uploadFile = exports.fileUpload = void 0;
+exports.deleteFile = exports.getFile = exports.getAllFiles = exports.uploadFile = exports.upload = void 0;
 const path_1 = __importDefault(require("path"));
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 const APIFeatures_1 = __importDefault(require("../utils/APIFeatures"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const multer_1 = __importDefault(require("multer"));
-const multerStorage = multer_1.default.diskStorage({
+const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/data');
+        const uploadPath = path_1.default.join(__dirname, '../public/files');
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        //file-id-timestamp.ext
-        const ext = file.mimetype.split('/')[1];
-        cb(null, file.fieldname + '-' + Date.now() + path_1.default.extname(file.originalname));
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const extension = file.originalname.split('.').pop();
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.' + extension);
     },
 });
-const multerFilter = (req, file, cb) => {
-    const filetypes = /pdf|jpeg|jpg|png|mp3|mp4|wav|avi|mov/;
-    const extname = filetypes.test(path_1.default.extname(file.originalname).toLowerCase());
-    // Check MIME type
-    const mimetype = filetypes.test(file.mimetype);
-    if (mimetype && extname) {
-        return cb(null, true);
-    }
-    else {
-        cb(null, false);
-    }
-};
-const upload = (0, multer_1.default)({
-    storage: multerStorage,
-    fileFilter: multerFilter,
-});
-exports.fileUpload = upload.array('originalname', 10);
+exports.upload = (0, multer_1.default)({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
+        const fileExtension = path_1.default.extname(file.originalname).toLowerCase();
+        const fileType = fileExtension.substring(1);
+        if (allowedFileTypes.includes(fileType)) {
+            cb(null, true); // Accept the file
+        }
+        else {
+            cb(new Error('Invalid file type')); // Reject the file
+        }
+    },
+}).array('files', 10);
 exports.uploadFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, description, fileType } = req.body;
-    const uploadedFile = req.files;
-    // const newFile = await File.create({
-    //   title,
-    //   description,
-    //   fileType,
-    //   fileUrl: req.files[0].filename,
-    //   path: req.files[0].originalname,
-    //   uploadedBy: req.user!.id, // make sure user is defined before accessing its properties
-    // });
-    console.log(req.body);
-    console.log(uploadedFile);
+    // Access the uploaded files in req.files
+    const uploadedFiles = req.files;
+    // console.log(uploadedFiles);
+    // Create new file document in the database
+    const newFile = yield fileModel_1.File.create({
+        title: req.body.title,
+        description: req.body.description,
+        fileType: req.body.fileType,
+        fileUrl: uploadedFiles[0].filename,
+        path: uploadedFiles[0].originalname,
+    });
+    // Return a response to the client
     res.status(200).json({
         status: 'success',
-        message: 'file successfully uploaded',
+        message: 'File successfully uploaded',
         data: {
-        // file: newFile,
+            file: newFile,
         },
     });
 }));

@@ -130,5 +130,4 @@ userSchema.methods.createResetToken = function () {
     return resetToken;
 };
 exports.User = (0, mongoose_1.model)('User', userSchema);
-// export default User;
 //# sourceMappingURL=userModel.js.map
