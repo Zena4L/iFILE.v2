@@ -18,18 +18,31 @@ const storage = multer.diskStorage({
   },
 });
 
+// export const upload = multer({
+//   storage: storage,
+//   fileFilter: (req, file, cb: FileFilterCallback) => {
+//     const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
+//     const fileExtension = path.extname(file.originalname).toLowerCase();
+//     const fileType = fileExtension.substring(1);
+  
+//     if (allowedFileTypes.includes(fileType)) {
+//       cb(null, true); // Accept the file
+//     } else {
+//       cb(new Error('Invalid file type')); // Reject the file
+//     }
+//   },
+// }).array('files', 10);
 export const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb: FileFilterCallback) => {
-    const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
-    const fileExtension = path.extname(file.originalname).toLowerCase();
-    const fileType = fileExtension.substring(1);
-  
-    if (allowedFileTypes.includes(fileType)) {
-      cb(null, true); // Accept the file
-    } else {
-      cb(new Error('Invalid file type')); // Reject the file
-    }
+    const filetypes = /pdf|jpeg|jpg|png|mp3|mp4|wav|avi|mov/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (mimetype && extname) {
+        return cb(null, true);
+      } else {
+        cb(new Error('Invalide file'));
+      } 
   },
 }).array('files', 10);
 
@@ -95,5 +108,52 @@ export const deleteFile:RequestHandler = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: 'ok',
       data: null,
+    });
+  });
+
+export const downloadFile:RequestHandler = catchAsync(async (req, res, next) => {
+    const file = await File.findById(req.params.id);
+    if (!file) {
+      return next(new AppError('File not found', 404));
+    }
+    file.downloadCount += 1;
+    await file.save();
+  
+    const filePath = path.join(__dirname, '..','public', 'files', file.fileUrl);
+    const fileName = path.basename(filePath);
+    const extension = path.extname(fileName);
+    res.setHeader('Content-Disposition', `attachment; filename=${file.path}${extension}`);
+    res.status(200).download(filePath, fileName);
+  });
+  
+export const downloadviaEmail:RequestHandler = catchAsync(async (req, res, next) => {
+    const file = await File.findOne({ _id: req.params.id });
+    if (!file) {
+      return next(new AppError('File not found', 404));
+    }
+    // Send the email with the attachment
+    const url = `${req.protocol}://${req.get('host')}/`;
+    // /Users/clementbogyah/Desktop/iFILE/public/data/public/data/iFILE.jpeg"
+    const filePath = path.join(__dirname, '..', 'public', 'files', file.fileUrl);
+    // const email = new Email(req.user, url);
+    // const attachments = [
+    //   {
+    //     filename: file.title,
+    //     path: filePath,
+    //   },
+    // ];
+    // console.log(filePath);
+    // await email.send('emailDownload', 'Download attached', attachments);
+    
+    // Update the file's email count
+    file.emailCount += 1;
+    await file.save();
+  
+    res.status(200).json({
+      status: 'success',
+      message: 'Email sent successfully',
+      data: {
+        file: file,
+      },
     });
   });

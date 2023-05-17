@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteFile = exports.getFile = exports.getAllFiles = exports.uploadFile = exports.upload = void 0;
+exports.downloadviaEmail = exports.downloadFile = exports.deleteFile = exports.getFile = exports.getAllFiles = exports.uploadFile = exports.upload = void 0;
 const path_1 = __importDefault(require("path"));
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
@@ -30,17 +30,30 @@ const storage = multer_1.default.diskStorage({
         cb(null, file.fieldname + '-' + uniqueSuffix + '.' + extension);
     },
 });
+// export const upload = multer({
+//   storage: storage,
+//   fileFilter: (req, file, cb: FileFilterCallback) => {
+//     const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
+//     const fileExtension = path.extname(file.originalname).toLowerCase();
+//     const fileType = fileExtension.substring(1);
+//     if (allowedFileTypes.includes(fileType)) {
+//       cb(null, true); // Accept the file
+//     } else {
+//       cb(new Error('Invalid file type')); // Reject the file
+//     }
+//   },
+// }).array('files', 10);
 exports.upload = (0, multer_1.default)({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
-        const fileExtension = path_1.default.extname(file.originalname).toLowerCase();
-        const fileType = fileExtension.substring(1);
-        if (allowedFileTypes.includes(fileType)) {
-            cb(null, true); // Accept the file
+        const filetypes = /pdf|jpeg|jpg|png|mp3|mp4|wav|avi|mov/;
+        const extname = filetypes.test(path_1.default.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+        if (mimetype && extname) {
+            return cb(null, true);
         }
         else {
-            cb(new Error('Invalid file type')); // Reject the file
+            cb(new Error('Invalide file'));
         }
     },
 }).array('files', 10);
@@ -101,6 +114,48 @@ exports.deleteFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(voi
     res.status(200).json({
         status: 'ok',
         data: null,
+    });
+}));
+exports.downloadFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = yield fileModel_1.File.findById(req.params.id);
+    if (!file) {
+        return next(new AppError_1.default('File not found', 404));
+    }
+    file.downloadCount += 1;
+    yield file.save();
+    const filePath = path_1.default.join(__dirname, '..', 'public', 'files', file.fileUrl);
+    const fileName = path_1.default.basename(filePath);
+    const extension = path_1.default.extname(fileName);
+    res.setHeader('Content-Disposition', `attachment; filename=${file.path}${extension}`);
+    res.status(200).download(filePath, fileName);
+}));
+exports.downloadviaEmail = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = yield fileModel_1.File.findOne({ _id: req.params.id });
+    if (!file) {
+        return next(new AppError_1.default('File not found', 404));
+    }
+    // Send the email with the attachment
+    const url = `${req.protocol}://${req.get('host')}/`;
+    // /Users/clementbogyah/Desktop/iFILE/public/data/public/data/iFILE.jpeg"
+    const filePath = path_1.default.join(__dirname, '..', 'public', 'files', file.fileUrl);
+    // const email = new Email(req.user, url);
+    // const attachments = [
+    //   {
+    //     filename: file.title,
+    //     path: filePath,
+    //   },
+    // ];
+    // console.log(filePath);
+    // await email.send('emailDownload', 'Download attached', attachments);
+    // Update the file's email count
+    file.emailCount += 1;
+    yield file.save();
+    res.status(200).json({
+        status: 'success',
+        message: 'Email sent successfully',
+        data: {
+            file: file,
+        },
     });
 }));
 //# sourceMappingURL=fileController.js.map
