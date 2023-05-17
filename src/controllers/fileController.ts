@@ -1,10 +1,13 @@
 import path from "path";
 import { RequestHandler,Request } from "express";
 import { File,IFile } from "../models/fileModel";
+import {IUser} from '../models/userModel'
 import catchAsync from "../utils/CatchAsync";
 import APIFeatures from "../utils/APIFeatures";
 import AppError from "../utils/AppError";
 import multer, {FileFilterCallback} from "multer";
+import Email from "../utils/Email";
+import {userRequest} from '../utils/Interfaces';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -18,20 +21,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// export const upload = multer({
-//   storage: storage,
-//   fileFilter: (req, file, cb: FileFilterCallback) => {
-//     const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
-//     const fileExtension = path.extname(file.originalname).toLowerCase();
-//     const fileType = fileExtension.substring(1);
-  
-//     if (allowedFileTypes.includes(fileType)) {
-//       cb(null, true); // Accept the file
-//     } else {
-//       cb(new Error('Invalid file type')); // Reject the file
-//     }
-//   },
-// }).array('files', 10);
 export const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb: FileFilterCallback) => {
@@ -70,8 +59,6 @@ export const uploadFile:RequestHandler = catchAsync(async (req, res, next) => {
         });
   });
   
-  
-
 export const getAllFiles:RequestHandler = catchAsync(async (req, res, next) => {
     const features = new APIFeatures(File.find(), req.query)
       .filter()
@@ -126,7 +113,10 @@ export const downloadFile:RequestHandler = catchAsync(async (req, res, next) => 
     res.status(200).download(filePath, fileName);
   });
   
-export const downloadviaEmail:RequestHandler = catchAsync(async (req, res, next) => {
+  // interface userRequest extends Request {
+  //   user?: IUser;
+  // }
+export const downloadviaEmail:RequestHandler = catchAsync(async (req:userRequest, res, next) => {
     const file = await File.findOne({ _id: req.params.id });
     if (!file) {
       return next(new AppError('File not found', 404));
@@ -135,15 +125,15 @@ export const downloadviaEmail:RequestHandler = catchAsync(async (req, res, next)
     const url = `${req.protocol}://${req.get('host')}/`;
     // /Users/clementbogyah/Desktop/iFILE/public/data/public/data/iFILE.jpeg"
     const filePath = path.join(__dirname, '..', 'public', 'files', file.fileUrl);
-    // const email = new Email(req.user, url);
-    // const attachments = [
-    //   {
-    //     filename: file.title,
-    //     path: filePath,
-    //   },
-    // ];
-    // console.log(filePath);
-    // await email.send('emailDownload', 'Download attached', attachments);
+    const email = new Email(req.user as IUser, url);
+    const attachments = [
+      {
+        filename: file.title,
+        path: filePath,
+      },
+    ];
+    console.log(filePath);
+    await email.send('emailDownload', 'Download attached', attachments);
     
     // Update the file's email count
     file.emailCount += 1;

@@ -41,6 +41,7 @@ const crypto = __importStar(require("crypto"));
 const userModel_1 = require("../models/userModel");
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
+const Email_1 = __importDefault(require("../utils/Email"));
 const Token_1 = __importDefault(require("../utils/Token"));
 exports.signUp = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, passwordConfirm } = req.body;
@@ -50,9 +51,9 @@ exports.signUp = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0,
         password,
         passwordConfirm,
     });
-    // const url = `${req.protocol}://${req.get('host')}/`;
-    // const sendEmail = new Email(newUser,url);
-    // await sendEmail.sendWelcome();
+    const url = `${req.protocol}://${req.get('host')}/`;
+    const sendEmail = new Email_1.default(newUser, url);
+    yield sendEmail.sendWelcome();
     const token = new Token_1.default(newUser, res, 201);
     token.createSendToken();
 }));

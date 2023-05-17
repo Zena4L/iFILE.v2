@@ -30,6 +30,7 @@ const path_1 = __importDefault(require("path"));
 const express_1 = __importStar(require("express"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const fileRouter_1 = __importDefault(require("./routes/fileRouter"));
+const viewRouter_1 = __importDefault(require("./routes/viewRouter"));
 const morgan_1 = __importDefault(require("morgan"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const helmet_1 = __importDefault(require("helmet"));
@@ -40,7 +41,7 @@ const AppError_1 = __importDefault(require("./utils/AppError"));
 const errorController_1 = __importDefault(require("./controllers/errorController"));
 const app = (0, express_1.default)();
 app.set('view engine', 'pug');
-app.set('views', path_1.default.join(__dirname, 'views'));
+app.set('views', path_1.default.join(__dirname, '..', 'src', 'views'));
 // Serving static files
 app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
 if (process.env.NODE_ENV === 'development') {
@@ -71,6 +72,7 @@ app.use((0, express_1.json)());
 app.use((0, express_mongo_sanitize_1.default)());
 app.use('/v1/api/users', userRoutes_1.default);
 app.use('/v1/api/files', fileRouter_1.default);
+app.use('/', viewRouter_1.default);
 app.all('*', (req, res, next) => {
     next(new AppError_1.default(`cannot find ${req.originalUrl}`, 404));
 });

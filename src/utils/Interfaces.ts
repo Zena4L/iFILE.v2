@@ -1,3 +1,5 @@
+import { IUser } from "../models/userModel";
+import { Request } from "express";
 export interface SignupRequest {
     name: string;
     email: string;
@@ -16,4 +18,7 @@ export interface decodedToken {
 }
 export interface Obj {
   [key: string]: string;
+}
+export interface userRequest extends Request {
+  user?: IUser;
 }

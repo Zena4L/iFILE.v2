@@ -19,6 +19,7 @@ const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 const APIFeatures_1 = __importDefault(require("../utils/APIFeatures"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const multer_1 = __importDefault(require("multer"));
+const Email_1 = __importDefault(require("../utils/Email"));
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
         const uploadPath = path_1.default.join(__dirname, '../public/files');
@@ -30,19 +31,6 @@ const storage = multer_1.default.diskStorage({
         cb(null, file.fieldname + '-' + uniqueSuffix + '.' + extension);
     },
 });
-// export const upload = multer({
-//   storage: storage,
-//   fileFilter: (req, file, cb: FileFilterCallback) => {
-//     const allowedFileTypes = ['pdf', 'audio', 'image', 'video'];
-//     const fileExtension = path.extname(file.originalname).toLowerCase();
-//     const fileType = fileExtension.substring(1);
-//     if (allowedFileTypes.includes(fileType)) {
-//       cb(null, true); // Accept the file
-//     } else {
-//       cb(new Error('Invalid file type')); // Reject the file
-//     }
-//   },
-// }).array('files', 10);
 exports.upload = (0, multer_1.default)({
     storage: storage,
     fileFilter: (req, file, cb) => {
@@ -129,6 +117,9 @@ exports.downloadFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(v
     res.setHeader('Content-Disposition', `attachment; filename=${file.path}${extension}`);
     res.status(200).download(filePath, fileName);
 }));
+// interface userRequest extends Request {
+//   user?: IUser;
+// }
 exports.downloadviaEmail = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const file = yield fileModel_1.File.findOne({ _id: req.params.id });
     if (!file) {
@@ -138,15 +129,15 @@ exports.downloadviaEmail = (0, CatchAsync_1.default)((req, res, next) => __await
     const url = `${req.protocol}://${req.get('host')}/`;
     // /Users/clementbogyah/Desktop/iFILE/public/data/public/data/iFILE.jpeg"
     const filePath = path_1.default.join(__dirname, '..', 'public', 'files', file.fileUrl);
-    // const email = new Email(req.user, url);
-    // const attachments = [
-    //   {
-    //     filename: file.title,
-    //     path: filePath,
-    //   },
-    // ];
-    // console.log(filePath);
-    // await email.send('emailDownload', 'Download attached', attachments);
+    const email = new Email_1.default(req.user, url);
+    const attachments = [
+        {
+            filename: file.title,
+            path: filePath,
+        },
+    ];
+    console.log(filePath);
+    yield email.send('emailDownload', 'Download attached', attachments);
     // Update the file's email count
     file.emailCount += 1;
     yield file.save();
