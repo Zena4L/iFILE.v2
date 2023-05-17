@@ -9,10 +9,8 @@ import Email from "../utils/Email";
 import Tokinazation from '../utils/Token';
 import {SignupRequest, loginRequest , decodedToken} from '../utils/Interfaces'
 import { CookieOptions } from 'express';
+import {userRequest} from '../utils/Interfaces';
 
-interface userRequest extends Request {
-  user?: IUser;
-}
 interface userResponse extends Response {
   user?: IUser;
 }
@@ -27,9 +25,9 @@ export const signUp: RequestHandler = catchAsync(async (req, res, next) => {
       passwordConfirm,
     });
   
-    // const url = `${req.protocol}://${req.get('host')}/`;
-    // const sendEmail = new Email(newUser,url);
-    // await sendEmail.sendWelcome();
+    const url = `${req.protocol}://${req.get('host')}/`;
+    const sendEmail = new Email(newUser,url);
+    await sendEmail.sendWelcome();
 
     const token = new Tokinazation(newUser,res,201);
     token.createSendToken();
