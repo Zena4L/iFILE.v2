@@ -1,0 +1,36 @@
+
+.min-h-screen.flex.flex-row.bg-gray-100
+    .flex.flex-col.w-56.bg-white.rounded-r-3xl.overflow-hidden
+        .flex.items-center.justify-center.h-20.shadow-md
+            h1.text-3xl.uppercase.text-indigo-500 iFILE
+        ul.flex.flex-col.py-4
+            li
+                a.flex.flex-row.items-center.h-12.transform.transition-transform.ease-in.duration-200.text-gray-500(href='/', class='hover:translate-x-2 hover:text-gray-800')
+                    span.inline-flex.items-center.justify-center.h-12.w-12.text-lg.text-gray-400
+                        i.bx.bx-home
+                    span.text-sm.font-medium Home
+            if user
+                li
+                    a.flex.flex-row.items-center.h-12.transform.transition-transform.ease-in.duration-200.text-gray-500(href='/profile', class='hover:translate-x-2 hover:text-gray-800')
+                        span.inline-flex.items-center.justify-center.h-12.w-12.text-lg.text-gray-400
+                            i.bx.bx-user
+                        span.text-sm.font-medium Profile
+            else 
+                li
+                    a.flex.flex-row.items-center.h-12.transform.transition-transform.ease-in.duration-200.text-gray-500(href='/login', class='hover:translate-x-2 hover:text-gray-800')
+                        span.inline-flex.items-center.justify-center.h-12.w-12.text-lg.text-gray-400
+                            i.bx.bx-user
+                        span.text-sm.font-medium login
+            li
+                a.flex.flex-row.items-center.h-12.transform.transition-transform.ease-in.duration-200.text-gray-500(href='#', class='hover:translate-x-2 hover:text-gray-800')
+                    span.inline-flex.items-center.justify-center.h-12.w-12.text-lg.text-gray-400
+                        i.bx.bx-bell
+                    span.text-sm.font-medium Notifications
+                    span.ml-auto.mr-6.text-sm.bg-red-100.rounded-full.px-3.py-px.text-red-500 5
+            li
+                if user
+                    button.logout.flex.flex-row.items-center.h-12.transform.transition-transform.ease-in.duration-200.text-gray-500(class='hover:translate-x-2 hover:text-gray-800')
+                        span.inline-flex.items-center.justify-center.h-12.w-12.text-lg.text-gray-400
+                            i.bx.bx-log-out
+                        span.text-sm.font-medium Logout
+                

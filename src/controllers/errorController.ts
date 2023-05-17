@@ -57,6 +57,7 @@ const sendErrorDev = (err: AppError, req: Request, res: Response) => {
       title: 'Something went wrong!',
       msg: err.message,
     });
+   
   };
 
 const sendErrorProd = (err: AppError, req: Request, res: Response) => {

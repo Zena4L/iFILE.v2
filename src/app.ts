@@ -2,6 +2,7 @@ import path from 'path';
 import express,{json,urlencoded, Request,Response,NextFunction} from 'express';
 import userRouter from './routes/userRoutes'
 import fileRouter from './routes/fileRouter';
+import viewRouter from './routes/viewRouter';
 import morgan from 'morgan';
 import cookieparser from 'cookie-parser';
 import helmet from 'helmet';
@@ -15,7 +16,7 @@ import errorHandler from './controllers/errorController'
 const app = express();
 
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '..', 'src', 'views'));
 
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -57,6 +58,7 @@ app.use(mongoSanitize());
 
 app.use('/v1/api/users',userRouter)
 app.use('/v1/api/files',fileRouter)
+app.use('/',viewRouter)
 
 app.all('*', (req:Request, res:Response, next:NextFunction) => {
     next(new AppError(`cannot find ${req.originalUrl}`, 404));

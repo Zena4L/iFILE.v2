@@ -15,38 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.profile = exports.signup = exports.login = exports.overview = void 0;
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
-const pug_1 = __importDefault(require("pug"));
-const path_1 = __importDefault(require("path"));
-// export const overview:RequestHandler = catchAsync(async (req, res, next) => {
-//     const files = await File.find();
-//     res.status(200).render('overview', {
-//       title: 'All Files',
-//       files,
-//     });
-//   });
-exports.overview = (0, CatchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// export const overview:RequestHandler = (req, res) => {
+//     res.render('base', { title: 'Home Page' });
+//   }
+exports.overview = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const files = yield fileModel_1.File.find();
-    const templatePath = path_1.default.join(__dirname, 'views', 'base.pug');
-    const data = {
+    res.status(200).render('overview', {
         title: 'All Files',
         files,
-    };
-    const htmlOutput = pug_1.default.renderFile(templatePath, data);
-    res.send(htmlOutput);
+    });
 }));
-exports.login = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const login = (req, res, next) => {
     res.status(200).render('login', {
         title: 'Log into your Account',
     });
-}));
-exports.signup = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+};
+exports.login = login;
+const signup = (req, res, next) => {
     res.status(200).render('signup', {
         title: 'Create Account',
     });
-}));
-exports.profile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+};
+exports.signup = signup;
+const profile = (req, res, next) => {
     res.status(200).render('profile', {
         title: 'Your Profile',
     });
-}));
+};
+exports.profile = profile;
 //# sourceMappingURL=viewController.js.map
