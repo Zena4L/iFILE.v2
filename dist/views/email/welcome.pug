@@ -1,0 +1,17 @@
+extends baseEmail 
+
+block content
+    p Hi #{firstName},
+    p Welcome to IFILE, this is a project for AMALITECH🎉🙏
+    p Thank you for signing up. Happy to test it with you
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+                td(align='left')
+                    table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                            tr
+                                td
+                                    a(href=`${url}`, target='_blank') Open profile
+    p Kindly wish me luck as you test this
+    p - Developed by Clement Owireku-Bogyah

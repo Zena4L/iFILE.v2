@@ -1,0 +1,28 @@
+extends base
+
+block content 
+    .flex.justify-center.h-screen.w-screen.items-center
+        form.form.w-full.flex.flex-col.items-center(class='md:w-1/2')
+            // text login
+            h1.text-center.text-2xl.font-bold.text-gray-600.mb-6 LOGIN
+            // email input
+            .mb-6(class='w-3/4')
+                input#email.w-full.py-4.px-8.bg-slate-200.rounded.outline-blue-500(type='email', name='email', class='placeholder:font-semibold hover:ring-1', placeholder='User Name')
+            // password input
+            .mb-6(class='w-3/4')
+                input#password.w-full.py-4.px-8.bg-slate-200.rounded.outline-blue-500(type='password', name='password', class='placeholder:font-semibold hover:ring-1', placeholder='Password')
+            // remember input
+            .flex.flex-row.justify-between(class='w-3/4')
+                .flex.items-center.gap-x-1
+                    input.w-4.h-4(type='checkbox', name='remember', id='')
+                    label.text-sm.text-slate-400(for='') Remember me
+                div
+                    a.text-sm.text-slate-400(href='#', class='hover:text-blue-500') Forgot?
+            // button
+            .mt-4(class='w-3/4')
+                button.py-4.bg-blue-400.w-full.rounded.text-blue-50.font-bold(type='submit', class='hover:bg-blue-700')  LOGIN
+            .text-grey-dark.mt-6
+                | Don't have an Account ? 
+                a.no-underline.border-b.border-blue.text-blue(href='/signup')
+                    | sign up
+                | .
