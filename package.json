@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon dist/server.js",
     "prod": "NODE_ENV=production nodemon dist/server.js",
-    "css-watch": "postcss ./src/public/styles/tailwind.css -w -o ./dist/public/styles/style.css"
+    "css-watch": "postcss ./src/public/styles/tailwind.css -w -o ./dist/public/styles/style.css",
+    "watch:js": "parcel watch ./src/public/ts/index.ts --out-dir ../dist/public/ts --out-file bundle.js",
+    "build:js": "parcel build ./src/public/ts/index.ts --out-dir ../dist/public/ts --out-file bundle.js"
   },
   "keywords": [],
   "author": "",
@@ -33,12 +35,15 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.22",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/html-to-text": "^9.0.0",
     "@types/mongoose": "^5.11.97",
     "autoprefixer": "^10.4.14",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
@@ -54,6 +59,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.2",
+    "parcel-bundler": "^1.12.5",
     "postcss": "^8.4.23",
     "postcss-cli": "^10.1.0",
     "pug": "^3.0.2",
