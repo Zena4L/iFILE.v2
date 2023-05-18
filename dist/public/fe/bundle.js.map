@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAoB,aAApB,QAAQ,IAAI","file":"bundle.js","sourceRoot":"../../../src/public/fe","sourcesContent":["console.log('hello');"]}

@@ -7,7 +7,6 @@ import { signUp,
     strictTo, 
     forgotPassword ,
     resetPassword,
-    isLoggedIn,
     updatePassword
 } from "../controllers/authController";
 

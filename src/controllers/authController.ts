@@ -52,16 +52,16 @@ export const login:RequestHandler = catchAsync(async (req, res, next) => {
   });
 
 export const logout:RequestHandler = (req, res) => {
-    const cookieOptions:CookieOptions = {
-      maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
-      domain: 'localhost',
-      path: '/',
-    };
-    res.cookie('jwt', 'logded out', cookieOptions);
-    res.status(200).json({ status: 'success' });
+  const cookieOptions:CookieOptions = {
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+    domain: 'localhost',
+    path: '/',
+  };
+  res.cookie('jwt', 'logded out', cookieOptions);
+  res.status(200).json({ status: 'success' });
   };
  
 
@@ -176,7 +176,7 @@ export const isLoggedIn:RequestHandler = catchAsync(async (req:userRequest, res:
         res.locals.user = currentUser as IUser;
         return next();
       } catch (err) {
-        return next(err);
+        return next();
       }
     }
     next();

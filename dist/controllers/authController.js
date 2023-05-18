@@ -185,7 +185,7 @@ exports.isLoggedIn = (0, CatchAsync_1.default)((req, res, next) => __awaiter(voi
             return next();
         }
         catch (err) {
-            return next(err);
+            return next();
         }
     }
     next();

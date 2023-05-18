@@ -12,30 +12,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = void 0;
 const axios_1 = __importDefault(require("axios"));
-const login = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+const signUp = (name, email, password, passwordConfirm) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const res = yield axios_1.default.post('http://localhost:3000/v1/api/users/login', {
+        const res = yield axios_1.default.post('http://localhost:3000/v1/api/users/signup', {
+            name,
             email,
             password,
+            passwordConfirm,
         }, {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        if (res.data.status === "success") {
-            alert('Logged in successfully!');
+        console.log(res);
+        if (res.data.status === "sucess") {
+            alert('sign-up successfully!');
             setTimeout(() => {
                 window.location.href = '/';
             }, 1500);
         }
     }
-    catch (error) {
-        alert('Incorrect Email or Password, Try again');
-        console.log(error.response.data.message);
+    catch (err) {
+        alert('Signup fail, Try again');
+        console.log(err.response.data.message);
     }
 });
-exports.login = login;
-//# sourceMappingURL=login.js.map
+exports.default = signUp;
+//# sourceMappingURL=signup.js.map

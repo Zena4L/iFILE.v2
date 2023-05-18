@@ -75,14 +75,14 @@ export default class Email {
     await this.send('welcome', 'Welcome to IFILE!');
   }
 
-  async sendResetPassword():Promise<void> {
+  async sendResetPassword():Promise<void>  {
     await this.send(
       'passwordReset',
       'Reset your password (Valid for only 10 mins)'
     );
   }
 
-  async sendFileViaEmail():Promise<void> {
+  async sendFileViaEmail():Promise<void>  {
     await this.send('emailDownload', 'Download attached');
   }
 }

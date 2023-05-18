@@ -41,6 +41,7 @@ class Tokinazation {
       },
     });
   }
+ 
 }
 
 export default Tokinazation;
