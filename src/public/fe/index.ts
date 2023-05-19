@@ -2,12 +2,14 @@ import login from './login';
 import logout from './logout';
 import signUp from './signup';
 import updateSettings from './userSettings';
+import uploadFile from './upload';
 
 const loginForm = document.querySelector('.form') as HTMLFormElement;
 const logoutBtn = document.querySelector('.logout') as HTMLFormElement
 const signupForm = document.querySelector('.signup') as HTMLFormElement;
 const userDataForm = document.querySelector('.user-data-from') as HTMLFormElement;
 const passwordForm = document.querySelector('.user-password-forms') as HTMLFormElement;
+const uploadForm = document.querySelector('.file-upload') as HTMLFormElement;
 
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
@@ -58,4 +60,21 @@ if (passwordForm) {
       // console.log({passwordCurrent,password,passwordConfirm})
     });
   }
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = new FormData();
+      form.append('title', (document.getElementById('title') as HTMLInputElement).value);
+      form.append('description', (document.getElementById('description') as HTMLInputElement).value);
+      form.append('fileType', (document.getElementById('fileType') as HTMLInputElement).value);
+      
+      const filesInput = document.getElementById('originalname') as HTMLInputElement;
+      if (filesInput && filesInput.files && filesInput.files.length > 0) {
+        form.append('files', filesInput.files[0]);
+      }   
+      uploadFile(form);
+    });
+  }
+  
+  
   
