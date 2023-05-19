@@ -1,7 +1,6 @@
 var path = require('path');
 
 module.exports = {
-	watch: false,
 	target: 'electron-renderer',
 	mode: 'development',
 	devtool: 'inline-source-map',
