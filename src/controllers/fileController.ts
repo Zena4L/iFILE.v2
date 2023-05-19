@@ -31,6 +31,7 @@ export const upload = multer({
         return cb(null, true);
       } else {
         cb(new Error('Invalide file'));
+        // cb(null,false);
       } 
   },
 }).array('files', 10);

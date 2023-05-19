@@ -8,5 +8,6 @@ router.route('/').get(authController_1.isLoggedIn, viewController_1.overview);
 router.route('/login').get(viewController_1.login);
 router.route('/signup').get(viewController_1.signup);
 router.route('/profile').get(authController_1.isLoggedIn, viewController_1.profile);
+router.get('/:slug', authController_1.isLoggedIn, viewController_1.getFile);
 exports.default = router;
 //# sourceMappingURL=viewRouter.js.map

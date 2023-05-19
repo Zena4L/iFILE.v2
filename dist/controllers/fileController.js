@@ -33,6 +33,7 @@ exports.upload = (0, multer_1.default)({
         }
         else {
             cb(new Error('Invalide file'));
+            // cb(null,false);
         }
     },
 }).array('files', 10);
