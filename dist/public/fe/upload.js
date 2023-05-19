@@ -12,7 +12,6 @@ const uploadFile = async (form) => {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log(res);
         if (res.data.status === "success") {
             alert('File uploaded successfully!');
             setTimeout(() => {

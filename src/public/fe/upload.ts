@@ -13,8 +13,6 @@ const uploadFile = async (form:FormData): Promise<void> => {
       }
     );
   
-    console.log(res);
-  
     if (res.data.status === "success") {
       alert('File uploaded successfully!');
       setTimeout(() => {
