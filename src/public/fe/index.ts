@@ -3,6 +3,8 @@ import logout from './logout';
 import signUp from './signup';
 import updateSettings from './userSettings';
 import uploadFile from './upload';
+import download from './download';
+import emailDownload from './email';
 
 const loginForm = document.querySelector('.form') as HTMLFormElement;
 const logoutBtn = document.querySelector('.logout') as HTMLFormElement
@@ -10,6 +12,10 @@ const signupForm = document.querySelector('.signup') as HTMLFormElement;
 const userDataForm = document.querySelector('.user-data-from') as HTMLFormElement;
 const passwordForm = document.querySelector('.user-password-forms') as HTMLFormElement;
 const uploadForm = document.querySelector('.file-upload') as HTMLFormElement;
+const downloadBtns = document.querySelectorAll<HTMLButtonElement>('button#downloadBtn');
+const emailBtn= document.querySelectorAll<HTMLButtonElement>('#EmailBtn');
+
+
 
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
@@ -76,5 +82,25 @@ if (passwordForm) {
     });
   }
   
-  
-  
+  if (downloadBtns) {
+    downloadBtns.forEach((downloadBtn: HTMLButtonElement) => {
+      const fileId: string | undefined = downloadBtn.dataset.id;
+      downloadBtn.addEventListener('click', () => {
+        if (fileId) {
+          download(fileId);
+          // console.log(fileId);
+        }
+      });
+    });
+  }
+
+if(emailBtn){
+    emailBtn.forEach((emailBtn:HTMLButtonElement)=>{
+      const fileId: string | undefined = emailBtn.dataset.id;
+      emailBtn.addEventListener('click',()=>{
+        if(fileId){
+          emailDownload(fileId);
+        }
+    })
+    })
+  }
