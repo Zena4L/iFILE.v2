@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFile = exports.profile = exports.signup = exports.login = exports.overview = void 0;
+exports.searchFile = exports.getFile = exports.profile = exports.signup = exports.login = exports.overview = void 0;
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
@@ -53,5 +53,17 @@ exports.getFile = (0, CatchAsync_1.default)(async (req, res, next) => {
     else {
         return res.redirect('/login'); // If not logged in, redirect to login page
     }
+});
+exports.searchFile = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const { keyword } = req.body;
+    const searchResults = await fileModel_1.File.find({ title: { $regex: `^.*${keyword}.*$`, $options: 'i' } });
+    console.log(keyword);
+    if (searchResults.length === 0) {
+        return next(new AppError_1.default('No file found', 404));
+    }
+    res.status(200).render('overview', {
+        title: 'All Files',
+        files: searchResults, // Pass searchResults as 'files'
+    });
 });
 //# sourceMappingURL=viewController.js.map

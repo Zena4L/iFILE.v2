@@ -48,4 +48,19 @@ export const profile:RequestHandler = (req, res, next) => {
       return res.redirect('/login'); // If not logged in, redirect to login page
     }
   });
+  export const searchFile: RequestHandler = catchAsync(async (req, res, next) => {
+    const { keyword } = req.body;
+    const searchResults = await File.find({ title: { $regex: `^.*${keyword}.*$`, $options: 'i' } });
+    console.log(keyword);
+  
+    if (searchResults.length === 0) {
+      return next(new AppError('No file found', 404));
+    }
+  
+    res.status(200).render('overview', {
+      title: 'All Files',
+      files: searchResults, // Pass searchResults as 'files'
+    });
+  });
+  
   

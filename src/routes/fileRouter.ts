@@ -10,4 +10,6 @@ router.post('/upload',protect,strictTo('admin'),upload,uploadFile)
 router.get('/download/:id',protect,downloadFile)
 router.get('/email/:id',protect,downloadviaEmail)
 
+
+
 export default router;

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {overview,login,signup,profile,getFile} from '../controllers/viewController';
+import {overview,login,signup,profile,getFile,searchFile} from '../controllers/viewController';
 import { isLoggedIn } from "../controllers/authController";
 
 
@@ -10,5 +10,6 @@ router.route('/login').get(login);
 router.route('/signup').get(signup);
 router.route('/profile').get(isLoggedIn,profile);
 router.get('/:slug', isLoggedIn, getFile);
+router.post('/search',searchFile)
 
 export default router;

@@ -88,6 +88,7 @@ export const getFile:RequestHandler = catchAsync(async (req, res, next) => {
       },
     });
   });
+  
 export const deleteFile:RequestHandler = catchAsync(async (req, res, next) => {
     const file = await File.findByIdAndDelete(req.params.id);
     if (!file) {
@@ -148,3 +149,5 @@ export const downloadviaEmail:RequestHandler = catchAsync(async (req:userRequest
       },
     });
   });
+
+  
