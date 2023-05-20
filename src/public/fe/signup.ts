@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import {IUser} from '../../models/userModel';
+
 
 interface LoginResponse {
     status: string;

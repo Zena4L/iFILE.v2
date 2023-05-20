@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -42,15 +33,16 @@ exports.upload = (0, multer_1.default)({
         }
         else {
             cb(new Error('Invalide file'));
+            // cb(null,false);
         }
     },
 }).array('files', 10);
-exports.uploadFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.uploadFile = (0, CatchAsync_1.default)(async (req, res, next) => {
     // Access the uploaded files in req.files
     const uploadedFiles = req.files;
     // console.log(uploadedFiles);
     // Create new file document in the database
-    const newFile = yield fileModel_1.File.create({
+    const newFile = await fileModel_1.File.create({
         title: req.body.title,
         description: req.body.description,
         fileType: req.body.fileType,
@@ -65,14 +57,14 @@ exports.uploadFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(voi
             file: newFile,
         },
     });
-}));
-exports.getAllFiles = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+});
+exports.getAllFiles = (0, CatchAsync_1.default)(async (req, res, next) => {
     const features = new APIFeatures_1.default(fileModel_1.File.find(), req.query)
         .filter()
         .sort()
         .limitedField()
         .pagination();
-    const files = yield features.query;
+    const files = await features.query;
     res.status(200).json({
         status: 'ok',
         message: 'getting files',
@@ -81,9 +73,9 @@ exports.getAllFiles = (0, CatchAsync_1.default)((req, res, next) => __awaiter(vo
             files,
         },
     });
-}));
-exports.getFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const file = yield fileModel_1.File.findById(req.params.id);
+});
+exports.getFile = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const file = await fileModel_1.File.findById(req.params.id);
     if (!file)
         next(new AppError_1.default('No file with that id', 404));
     res.status(200).json({
@@ -93,9 +85,9 @@ exports.getFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0
             files: file,
         },
     });
-}));
-exports.deleteFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const file = yield fileModel_1.File.findByIdAndDelete(req.params.id);
+});
+exports.deleteFile = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const file = await fileModel_1.File.findByIdAndDelete(req.params.id);
     if (!file) {
         return next(new AppError_1.default('File not found', 404));
     }
@@ -103,25 +95,25 @@ exports.deleteFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(voi
         status: 'ok',
         data: null,
     });
-}));
-exports.downloadFile = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const file = yield fileModel_1.File.findById(req.params.id);
+});
+exports.downloadFile = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const file = await fileModel_1.File.findById(req.params.id);
     if (!file) {
         return next(new AppError_1.default('File not found', 404));
     }
     file.downloadCount += 1;
-    yield file.save();
+    await file.save();
     const filePath = path_1.default.join(__dirname, '..', 'public', 'files', file.fileUrl);
     const fileName = path_1.default.basename(filePath);
     const extension = path_1.default.extname(fileName);
     res.setHeader('Content-Disposition', `attachment; filename=${file.path}${extension}`);
     res.status(200).download(filePath, fileName);
-}));
+});
 // interface userRequest extends Request {
 //   user?: IUser;
 // }
-exports.downloadviaEmail = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const file = yield fileModel_1.File.findOne({ _id: req.params.id });
+exports.downloadviaEmail = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const file = await fileModel_1.File.findOne({ _id: req.params.id });
     if (!file) {
         return next(new AppError_1.default('File not found', 404));
     }
@@ -137,10 +129,10 @@ exports.downloadviaEmail = (0, CatchAsync_1.default)((req, res, next) => __await
         },
     ];
     console.log(filePath);
-    yield email.send('emailDownload', 'Download attached', attachments);
+    await email.send('emailDownload', 'Download attached', attachments);
     // Update the file's email count
     file.emailCount += 1;
-    yield file.save();
+    await file.save();
     res.status(200).json({
         status: 'success',
         message: 'Email sent successfully',
@@ -148,5 +140,5 @@ exports.downloadviaEmail = (0, CatchAsync_1.default)((req, res, next) => __await
             file: file,
         },
     });
-}));
+});
 //# sourceMappingURL=fileController.js.map

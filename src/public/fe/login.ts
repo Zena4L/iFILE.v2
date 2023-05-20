@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import exp from 'constants';
 
 interface LoginResponse {
   status: string;

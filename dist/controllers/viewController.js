@@ -1,30 +1,22 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profile = exports.signup = exports.login = exports.overview = void 0;
+exports.searchFile = exports.getFile = exports.profile = exports.signup = exports.login = exports.overview = void 0;
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
+const AppError_1 = __importDefault(require("../utils/AppError"));
 // export const overview:RequestHandler = (req, res) => {
 //     res.render('base', { title: 'Home Page' });
 //   }
-exports.overview = (0, CatchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const files = yield fileModel_1.File.find();
+exports.overview = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const files = await fileModel_1.File.find();
     res.status(200).render('overview', {
         title: 'All Files',
         files,
     });
-}));
+});
 const login = (req, res, next) => {
     res.status(200).render('login', {
         title: 'Log into your Account',
@@ -43,4 +35,35 @@ const profile = (req, res, next) => {
     });
 };
 exports.profile = profile;
+exports.getFile = (0, CatchAsync_1.default)(async (req, res, next) => {
+    // 1. Get file data
+    const file = await fileModel_1.File.findOne({ slug: req.params.slug });
+    // 2. Check if file exists
+    if (!file) {
+        return next(new AppError_1.default('There is no file with that name', 404));
+    }
+    // 3. Check if user is logged in
+    if (res.locals.user) {
+        // 4. Render the template with file data
+        res.status(200).render('details', {
+            title: `${file.title} - File server`,
+            file,
+        });
+    }
+    else {
+        return res.redirect('/login'); // If not logged in, redirect to login page
+    }
+});
+exports.searchFile = (0, CatchAsync_1.default)(async (req, res, next) => {
+    const { keyword } = req.body;
+    const searchResults = await fileModel_1.File.find({ title: { $regex: `^.*${keyword}.*$`, $options: 'i' } });
+    console.log(keyword);
+    if (searchResults.length === 0) {
+        return next(new AppError_1.default('No file found', 404));
+    }
+    res.status(200).render('overview', {
+        title: 'All Files',
+        files: searchResults, // Pass searchResults as 'files'
+    });
+});
 //# sourceMappingURL=viewController.js.map
