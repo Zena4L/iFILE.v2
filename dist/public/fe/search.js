@@ -4,31 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-const signUp = async (name, email, password, passwordConfirm) => {
+const search = async (keyword) => {
     try {
-        const res = await axios_1.default.post('http://localhost:3000/v1/api/users/signup', {
-            name,
-            email,
-            password,
-            passwordConfirm,
+        const res = await axios_1.default.post('http://localhost:3000/v1/api/files/searc', {
+            keyword
         }, {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(res);
         if (res.data.status === "sucess") {
-            alert('sign-up successfully!');
+            // alert('Logged in successfully!');
             setTimeout(() => {
                 window.location.href = '/';
             }, 1500);
         }
     }
-    catch (err) {
-        alert('Signup fail, Try again');
-        console.log(err.response.data.message);
+    catch (error) {
+        //   alert('Incorrect Email or Password, Try again');
+        console.log(error.response.data.message);
     }
 };
-exports.default = signUp;
-//# sourceMappingURL=signup.js.map
+exports.default = search;
+//# sourceMappingURL=search.js.map

@@ -31,6 +31,7 @@ export const upload = multer({
         return cb(null, true);
       } else {
         cb(new Error('Invalide file'));
+        // cb(null,false);
       } 
   },
 }).array('files', 10);
@@ -87,6 +88,7 @@ export const getFile:RequestHandler = catchAsync(async (req, res, next) => {
       },
     });
   });
+  
 export const deleteFile:RequestHandler = catchAsync(async (req, res, next) => {
     const file = await File.findByIdAndDelete(req.params.id);
     if (!file) {
@@ -147,3 +149,5 @@ export const downloadviaEmail:RequestHandler = catchAsync(async (req:userRequest
       },
     });
   });
+
+  
