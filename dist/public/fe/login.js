@@ -15,7 +15,7 @@ const login = async (email, password) => {
                 'Content-Type': 'application/json',
             },
         });
-        if (res.data.status === "sucess") {
+        if (res.data.status === "success") {
             alert('Logged in successfully!');
             setTimeout(() => {
                 window.location.href = '/';

@@ -21,7 +21,7 @@ const login = async (email: string, password: string): Promise<void> => {
         },
       }
     );
-    if (res.data.status === "sucess") {
+    if (res.data.status === "success") {
       alert('Logged in successfully!');
       setTimeout(() => {
         window.location.href = '/';
