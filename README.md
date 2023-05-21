@@ -19,5 +19,8 @@
     - PATCH upload a file [endpoint]({{url}}v1/api/upload)
     - GET download a file [endpoint]({{url}}v1/api/download)
     - GET download a file via email [endpoint]({{url}}v1/api/email)
+
+## OFFICIAL DOCUMENTATION HERE 
+[Link Here](https://documenter.getpostman.com/view/20278302/2s93m1bQja)
     
 
