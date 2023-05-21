@@ -10,7 +10,7 @@ interface LoginResponse {
   const signUp = async (name: string, email: string, password: string, passwordConfirm: string) => {
     try {
         const res: AxiosResponse<LoginResponse> = await axios.post(
-            'http://localhost:3000/v1/api/users/signup',
+            '/v1/api/users/signup',
             {
               name,
               email,

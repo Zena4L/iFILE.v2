@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 const uploadFile = async (form:FormData): Promise<void> => {
   try {
     const res: AxiosResponse<any> = await axios.post(
-      'http://localhost:3000/v1/api/files/upload',
+      '/v1/api/files/upload',
       form,
       {
         withCredentials: true,

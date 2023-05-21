@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const login = async (email, password) => {
     try {
-        const res = await axios_1.default.post('http://localhost:3000/v1/api/users/login', {
+        const res = await axios_1.default.post('/v1/api/users/login', {
             email,
             password,
         }, {

@@ -8,7 +8,7 @@ const emailDownload = async (fileId) => {
     try {
         const res = await (0, axios_1.default)({
             method: 'GET',
-            url: `http://localhost:3000/v1/api/files/email/${fileId}`,
+            url: `/v1/api/files/email/${fileId}`,
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',

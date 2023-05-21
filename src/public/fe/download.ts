@@ -4,7 +4,7 @@ const download = async (fileId: string): Promise<void> => {
   try {
     const res: AxiosResponse<Blob> = await axios({
       method: 'GET',
-      url: `http://localhost:3000/v1/api/files/download/${fileId}`,
+      url: `/v1/api/files/download/${fileId}`,
       withCredentials: true,
       responseType: 'blob',
       headers: {

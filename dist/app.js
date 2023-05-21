@@ -39,6 +39,7 @@ const express_mongo_sanitize_1 = __importDefault(require("express-mongo-sanitize
 const cors_1 = __importDefault(require("cors"));
 const AppError_1 = __importDefault(require("./utils/AppError"));
 const errorController_1 = __importDefault(require("./controllers/errorController"));
+const compression_1 = __importDefault(require("compression"));
 const app = (0, express_1.default)();
 app.set('view engine', 'pug');
 app.set('views', path_1.default.join(__dirname, '..', 'src', 'views'));
@@ -51,7 +52,7 @@ app.use((0, helmet_1.default)({
     contentSecurityPolicy: false,
 }));
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://ifile.onrender.com'],
     credentials: true,
 }));
 // Development logging
@@ -69,6 +70,7 @@ app.use((0, express_1.json)({ limit: '10kb' }));
 app.use((0, cookie_parser_1.default)());
 app.use((0, express_1.urlencoded)({ extended: true, limit: '10kb' }));
 app.use((0, express_1.json)());
+app.use((0, compression_1.default)());
 app.use((0, express_mongo_sanitize_1.default)());
 app.use('/v1/api/users', userRoutes_1.default);
 app.use('/v1/api/files', fileRouter_1.default);

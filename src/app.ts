@@ -11,6 +11,7 @@ import mongoSanitize from 'express-mongo-sanitize'
 import cors from 'cors';
 import AppError from './utils/AppError';
 import errorHandler from './controllers/errorController'
+import compression from 'compression';
 
 
 const app = express();
@@ -31,10 +32,11 @@ app.use(
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://ifile.onrender.com'],
     credentials: true,
   })
 );
+
 // Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -54,6 +56,7 @@ app.use(cookieparser());
 app.use(urlencoded({ extended: true, limit: '10kb' }));
 app.use(json())
 
+app.use(compression());
 app.use(mongoSanitize());
 
 app.use('/v1/api/users',userRouter)

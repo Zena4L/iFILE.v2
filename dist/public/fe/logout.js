@@ -8,7 +8,7 @@ const logout = async () => {
     try {
         const res = await (0, axios_1.default)({
             method: 'GET',
-            url: 'http://localhost:3000/v1/api/users/logout'
+            url: '/v1/api/users/logout'
         });
         if ((res.data.status = "success")) {
             setTimeout(() => {
