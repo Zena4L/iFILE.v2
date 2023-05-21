@@ -11,10 +11,18 @@ const AppError_1 = __importDefault(require("../utils/AppError"));
 //     res.render('base', { title: 'Home Page' });
 //   }
 exports.overview = (0, CatchAsync_1.default)(async (req, res, next) => {
-    const files = await fileModel_1.File.find();
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const skip = (page - 1) * limit;
+    const filesQuery = fileModel_1.File.find().skip(skip).limit(limit);
+    const countQuery = fileModel_1.File.countDocuments();
+    const [files, totalCount] = await Promise.all([filesQuery, countQuery]);
+    const totalPages = Math.ceil(totalCount / limit);
     res.status(200).render('overview', {
         title: 'All Files',
         files,
+        currentPage: page,
+        totalPages,
     });
 });
 const login = (req, res, next) => {
