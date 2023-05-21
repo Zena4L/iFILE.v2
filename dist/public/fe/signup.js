@@ -17,7 +17,6 @@ const signUp = async (name, email, password, passwordConfirm) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(res);
         if (res.data.status === "success") {
             alert('sign-up successfully!');
             setTimeout(() => {

@@ -24,7 +24,6 @@ interface LoginResponse {
               },
             }
           );          
-        console.log(res)
       if (res.data.status === "success") {
         alert('sign-up successfully!');
         setTimeout(() => {
