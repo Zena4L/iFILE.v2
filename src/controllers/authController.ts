@@ -57,7 +57,7 @@ export const logout:RequestHandler = (req, res) => {
     httpOnly: true,
     sameSite: 'none',
     secure: true,
-    domain: 'localhost',
+    domain: 'ifile.onrender.com',
     path: '/',
   };
   res.cookie('jwt', 'logded out', cookieOptions);
