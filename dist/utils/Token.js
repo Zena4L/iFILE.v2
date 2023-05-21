@@ -22,17 +22,17 @@ class Tokinazation {
             httpOnly: true,
             sameSite: 'none',
             secure: true,
-            domain: 'localhost',
+            domain: 'ifile.onrender.com',
             path: '/',
         };
         this.res.cookie('jwt', token, cookieOptions);
         this.user.password = '';
         this.res.status(this.statusCode).json({
-            status: 'sucess',
-            message: 'token available',
+            status: 'success',
+            message: 'Token available',
             token,
             data: {
-                user: this.user
+                user: this.user,
             },
         });
     }
