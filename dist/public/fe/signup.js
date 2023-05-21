@@ -18,7 +18,7 @@ const signUp = async (name, email, password, passwordConfirm) => {
             },
         });
         console.log(res);
-        if (res.data.status === "sucess") {
+        if (res.data.status === "success") {
             alert('sign-up successfully!');
             setTimeout(() => {
                 window.location.href = '/';
@@ -27,7 +27,6 @@ const signUp = async (name, email, password, passwordConfirm) => {
     }
     catch (err) {
         alert('Signup fail, Try again');
-        console.log(err.response.data.message);
     }
 };
 exports.default = signUp;

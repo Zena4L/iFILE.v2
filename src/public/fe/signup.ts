@@ -25,7 +25,7 @@ interface LoginResponse {
             }
           );          
         console.log(res)
-      if (res.data.status === "sucess") {
+      if (res.data.status === "success") {
         alert('sign-up successfully!');
         setTimeout(() => {
           window.location.href = '/';
@@ -33,7 +33,6 @@ interface LoginResponse {
       }
     } catch (err: any) {
       alert('Signup fail, Try again');
-      console.log(err.response.data.message);
     }
   };
   
