@@ -545,6 +545,9 @@ video {
 .mb-4 {
   margin-bottom: 1rem;
 }
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -577,9 +580,6 @@ video {
 }
 .mt-6 {
   margin-top: 1.5rem;
-}
-.mb-5 {
-  margin-bottom: 1.25rem;
 }
 .block {
   display: block;
@@ -1150,16 +1150,16 @@ video {
     transform: translateX(-50%);
     z-index: 9999;
     color: #fff;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 400;
     text-align: center;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    padding: 1.6rem 15rem;
+    padding: 1.3rem 10rem;
     box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
   }
   .alert--success {
-    background-color: #20bf6b;
+    background-color: #1f1494;
   }
   .alert--error {
     background-color: #eb4d4b;
