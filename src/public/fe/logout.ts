@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { showAlert } from './alert';
 
 const logout = async () => {
     try {
@@ -7,6 +8,7 @@ const logout = async () => {
         url: '/v1/api/users/logout'
       });
       if ((res.data.status = "success")){
+        showAlert('success', 'You are logged out');
         setTimeout(() => {
           window.location.href = '/';
         }, 1500);
