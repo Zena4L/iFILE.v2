@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { showAlert } from './alert';
 
 const emailDownload = async (fileId: string): Promise<void> => {
   try {
@@ -12,13 +13,13 @@ const emailDownload = async (fileId: string): Promise<void> => {
     });
 
     if (res.data.status === 'success') {
-      alert('Email sent successfully');
+      showAlert('success', 'email sent!');
       setTimeout(() => {
         window.location.href = '/';
       }, 1500);
     }
   } catch (error: any) {
-    alert('You need to login first. Please try again.');
+    showAlert('success', 'You need to login first. Please try again.');
     setTimeout(() => {
       window.location.href = '/signup';
     }, 1500);

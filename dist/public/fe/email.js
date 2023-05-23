@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
+const alert_1 = require("./alert");
 const emailDownload = async (fileId) => {
     try {
         const res = await (0, axios_1.default)({
@@ -15,14 +16,14 @@ const emailDownload = async (fileId) => {
             },
         });
         if (res.data.status === 'success') {
-            alert('Email sent successfully');
+            (0, alert_1.showAlert)('success', 'email sent!');
             setTimeout(() => {
                 window.location.href = '/';
             }, 1500);
         }
     }
     catch (error) {
-        alert('You need to login first. Please try again.');
+        (0, alert_1.showAlert)('success', 'You need to login first. Please try again.');
         setTimeout(() => {
             window.location.href = '/signup';
         }, 1500);
