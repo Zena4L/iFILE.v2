@@ -6,6 +6,7 @@ import uploadFile from './upload';
 import download from './download';
 import emailDownload from './email';
 
+
 const loginForm = document.querySelector('.form') as HTMLFormElement;
 const logoutBtn = document.querySelector('.logout') as HTMLFormElement
 const signupForm = document.querySelector('.signup') as HTMLFormElement;
