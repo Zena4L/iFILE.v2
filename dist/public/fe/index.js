@@ -10,6 +10,16 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/public/fe/alert.ts":
+/*!********************************!*\
+  !*** ./src/public/fe/alert.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.showAlert = exports.hideAlert = void 0;\nconst hideAlert = () => {\n    var _a;\n    const el = document.querySelector('.alert');\n    if (el)\n        (_a = el.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(el);\n};\nexports.hideAlert = hideAlert;\n// type is 'success' or 'error'\nconst showAlert = (type, msg, time = 7) => {\n    var _a;\n    (0, exports.hideAlert)();\n    const markup = `<div class=\"alert alert--${type}\">${msg}</div>`;\n    (_a = document.querySelector('body')) === null || _a === void 0 ? void 0 : _a.insertAdjacentHTML('afterbegin', markup);\n    window.setTimeout(exports.hideAlert, time * 1000);\n};\nexports.showAlert = showAlert;\n\n\n//# sourceURL=webpack://ifile/./src/public/fe/alert.ts?");
+
+/***/ }),
+
 /***/ "./src/public/fe/download.ts":
 /*!***********************************!*\
   !*** ./src/public/fe/download.ts ***!
@@ -46,7 +56,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
   \********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst axios_1 = __importDefault(__webpack_require__(/*! axios */ \"./node_modules/axios/dist/browser/axios.cjs\"));\nconst login = async (email, password) => {\n    try {\n        const res = await axios_1.default.post('/v1/api/users/login', {\n            email,\n            password,\n        }, {\n            withCredentials: true,\n            headers: {\n                'Content-Type': 'application/json',\n            },\n        });\n        if (res.data.status === \"success\") {\n            alert('Logged in successfully!');\n            setTimeout(() => {\n                window.location.href = '/';\n            }, 1500);\n        }\n    }\n    catch (error) {\n        alert('Incorrect Email or Password, Try again');\n        console.log(error.response.data.message);\n    }\n};\nexports[\"default\"] = login;\n\n\n//# sourceURL=webpack://ifile/./src/public/fe/login.ts?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst axios_1 = __importDefault(__webpack_require__(/*! axios */ \"./node_modules/axios/dist/browser/axios.cjs\"));\nconst alert_1 = __webpack_require__(/*! ./alert */ \"./src/public/fe/alert.ts\");\nconst login = async (email, password) => {\n    try {\n        const res = await axios_1.default.post('/v1/api/users/login', {\n            email,\n            password,\n        }, {\n            withCredentials: true,\n            headers: {\n                'Content-Type': 'application/json',\n            },\n        });\n        if (res.data.status === \"success\") {\n            // alert('Logged in successfully!');\n            (0, alert_1.showAlert)('success', 'Logged in successfully!');\n            setTimeout(() => {\n                window.location.href = '/';\n            }, 1500);\n        }\n    }\n    catch (error) {\n        (0, alert_1.showAlert)('error', error.response.data.message);\n    }\n};\nexports[\"default\"] = login;\n\n\n//# sourceURL=webpack://ifile/./src/public/fe/login.ts?");
 
 /***/ }),
 
@@ -66,7 +76,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
   \*********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst axios_1 = __importDefault(__webpack_require__(/*! axios */ \"./node_modules/axios/dist/browser/axios.cjs\"));\nconst signUp = async (name, email, password, passwordConfirm) => {\n    try {\n        const res = await axios_1.default.post('/v1/api/users/signup', {\n            name,\n            email,\n            password,\n            passwordConfirm,\n        }, {\n            withCredentials: true,\n            headers: {\n                'Content-Type': 'application/json',\n            },\n        });\n        if (res.data.status === \"success\") {\n            alert('sign-up successfully!');\n            setTimeout(() => {\n                window.location.href = '/';\n            }, 1500);\n        }\n    }\n    catch (err) {\n        alert('Signup fail, Try again');\n    }\n};\nexports[\"default\"] = signUp;\n\n\n//# sourceURL=webpack://ifile/./src/public/fe/signup.ts?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst axios_1 = __importDefault(__webpack_require__(/*! axios */ \"./node_modules/axios/dist/browser/axios.cjs\"));\nconst alert_1 = __webpack_require__(/*! ./alert */ \"./src/public/fe/alert.ts\");\nconst signUp = async (name, email, password, passwordConfirm) => {\n    try {\n        const res = await axios_1.default.post('/v1/api/users/signup', {\n            name,\n            email,\n            password,\n            passwordConfirm,\n        }, {\n            withCredentials: true,\n            headers: {\n                'Content-Type': 'application/json',\n            },\n        });\n        if (res.data.status === \"success\") {\n            (0, alert_1.showAlert)('success', 'Sign-up successful');\n            setTimeout(() => {\n                window.location.href = '/';\n            }, 1500);\n        }\n    }\n    catch (err) {\n        (0, alert_1.showAlert)('fail', 'Signup fail, Try again');\n    }\n};\nexports[\"default\"] = signUp;\n\n\n//# sourceURL=webpack://ifile/./src/public/fe/signup.ts?");
 
 /***/ }),
 

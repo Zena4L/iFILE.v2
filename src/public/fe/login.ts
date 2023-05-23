@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { showAlert } from './alert';
 
 interface LoginResponse {
   status: string;
@@ -22,14 +23,14 @@ const login = async (email: string, password: string): Promise<void> => {
       }
     );
     if (res.data.status === "success") {
-      alert('Logged in successfully!');
+      // alert('Logged in successfully!');
+      showAlert('success', 'Logged in successfully!');
       setTimeout(() => {
         window.location.href = '/';
       }, 1500);
     }
   } catch (error:any) {
-    alert('Incorrect Email or Password, Try again');
-    console.log(error.response.data.message);
+    showAlert('error', error.response.data.message);
   }
 };
 

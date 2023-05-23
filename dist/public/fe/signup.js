@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
+const alert_1 = require("./alert");
 const signUp = async (name, email, password, passwordConfirm) => {
     try {
         const res = await axios_1.default.post('/v1/api/users/signup', {
@@ -18,14 +19,14 @@ const signUp = async (name, email, password, passwordConfirm) => {
             },
         });
         if (res.data.status === "success") {
-            alert('sign-up successfully!');
+            (0, alert_1.showAlert)('success', 'Sign-up successful');
             setTimeout(() => {
                 window.location.href = '/';
             }, 1500);
         }
     }
     catch (err) {
-        alert('Signup fail, Try again');
+        (0, alert_1.showAlert)('fail', 'Signup fail, Try again');
     }
 };
 exports.default = signUp;

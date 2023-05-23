@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import { showAlert } from './alert';
 
 interface LoginResponse {
     status: string;
@@ -25,13 +25,13 @@ interface LoginResponse {
             }
           );          
       if (res.data.status === "success") {
-        alert('sign-up successfully!');
+        showAlert('success', 'Sign-up successful');
         setTimeout(() => {
           window.location.href = '/';
         }, 1500);
       }
     } catch (err: any) {
-      alert('Signup fail, Try again');
+      showAlert('fail','Signup fail, Try again');
     }
   };
   

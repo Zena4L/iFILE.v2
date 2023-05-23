@@ -9,7 +9,7 @@ html(lang="en")
         script(src='https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js', defer='')
         link(rel='stylesheet', href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css')
         title iFILE | #{title}
-    body 
+    body(data-alert=`${alert ? alert : ''}`)
         .bg-white.h-screen.flex
             include _header
             block content
