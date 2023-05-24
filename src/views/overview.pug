@@ -45,8 +45,6 @@ block content
                                 .card-container
                                     each file in files
                                         .card.flex.justify-between.border-b-2.pb-5.pt-5.rounded-md.py-2.px-4.grid.grid-cols-6.place-items-center
-                                            label
-                                                input(type="checkbox" name="myCheckbox" value="true")
                                             .file-thumbnail-here
                                                 span=file.fileType
                                             .file-name=file.title
