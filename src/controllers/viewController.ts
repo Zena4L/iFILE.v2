@@ -2,29 +2,26 @@ import { RequestHandler } from "express";
 import { File } from "../models/fileModel";
 import catchAsync from "../utils/CatchAsync";
 import AppError from "../utils/AppError";
+import APIFeatures from "../utils/APIFeatures";
 
-// export const overview:RequestHandler = (req, res) => {
-//     res.render('base', { title: 'Home Page' });
-//   }
+
 export const overview: RequestHandler = catchAsync(async (req, res, next) => {
-  const page = parseInt(req.query.page as string, 10) || 1;
-  const limit = parseInt(req.query.limit as string, 10) || 10;
 
-  const skip = (page - 1) * limit;
+  const features = new APIFeatures(File.find(), req.query)
+  .filter()
+  .sort()
+  .limitedField()
+  .pagination();
 
-  const filesQuery = File.find().skip(skip).limit(limit);
-  const countQuery = File.countDocuments();
-
-  const [files, totalCount] = await Promise.all([filesQuery, countQuery]);
-  const totalPages = Math.ceil(totalCount / limit);
+  const files = await features.query;
+  // console.log(files)
 
   res.status(200).render('overview', {
     title: 'All Files',
     files,
-    currentPage: page,
-    totalPages,
   });
 });
+
 
 
 export const login:RequestHandler =(req, res, next) => {
