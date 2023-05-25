@@ -5,6 +5,7 @@ import updateSettings from './userSettings';
 import uploadFile from './upload';
 import download from './download';
 import emailDownload from './email';
+import sortBy from './sortBy';
 
 
 const loginForm = document.querySelector('.form') as HTMLFormElement;
@@ -15,6 +16,7 @@ const passwordForm = document.querySelector('.user-password-forms') as HTMLFormE
 const uploadForm = document.querySelector('.file-upload') as HTMLFormElement;
 const downloadBtns = document.querySelectorAll<HTMLButtonElement>('button#downloadBtn');
 const emailBtn= document.querySelectorAll<HTMLButtonElement>('#EmailBtn');
+const selectElement = document.querySelector('.sortBy');
 
 
 
@@ -105,3 +107,14 @@ if(emailBtn){
     })
     })
   }
+
+ if (selectElement){
+  selectElement.addEventListener('change',()=>{
+    const pdfOption = (document.getElementById('fileType') as HTMLInputElement).value
+
+    
+    sortBy(pdfOption);
+    console.log(pdfOption)
+  })
+ } 
+  
