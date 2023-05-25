@@ -109,12 +109,10 @@ if(emailBtn){
   }
 
  if (selectElement){
-  selectElement.addEventListener('change',()=>{
-    const pdfOption = (document.getElementById('fileType') as HTMLInputElement).value
-
-    
+  selectElement.addEventListener('change',(e)=>{
+    const pdfOption = (document.getElementById('fileType') as HTMLInputElement).value 
     sortBy(pdfOption);
-    console.log(pdfOption)
+    // console.log(pdfOption);
   })
  } 
   

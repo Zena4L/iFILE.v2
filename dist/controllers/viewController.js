@@ -7,22 +7,18 @@ exports.searchFile = exports.getFile = exports.profile = exports.signup = export
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
-// export const overview:RequestHandler = (req, res) => {
-//     res.render('base', { title: 'Home Page' });
-//   }
+const APIFeatures_1 = __importDefault(require("../utils/APIFeatures"));
 exports.overview = (0, CatchAsync_1.default)(async (req, res, next) => {
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-    const skip = (page - 1) * limit;
-    const filesQuery = fileModel_1.File.find().skip(skip).limit(limit);
-    const countQuery = fileModel_1.File.countDocuments();
-    const [files, totalCount] = await Promise.all([filesQuery, countQuery]);
-    const totalPages = Math.ceil(totalCount / limit);
+    const features = new APIFeatures_1.default(fileModel_1.File.find(), req.query)
+        .filter()
+        .sort()
+        .limitedField()
+        .pagination();
+    const files = await features.query;
+    // console.log(files)
     res.status(200).render('overview', {
         title: 'All Files',
         files,
-        currentPage: page,
-        totalPages,
     });
 });
 const login = (req, res, next) => {
