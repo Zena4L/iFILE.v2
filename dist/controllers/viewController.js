@@ -15,10 +15,14 @@ exports.overview = (0, CatchAsync_1.default)(async (req, res, next) => {
         .limitedField()
         .pagination();
     const files = await features.query;
-    // console.log(files)
+    const totalDocuments = await fileModel_1.File.countDocuments();
+    const totalPages = Math.ceil(totalDocuments / 10);
+    const currentPage = req.query.page ? parseInt(req.query.page) : 1;
     res.status(200).render('overview', {
         title: 'All Files',
         files,
+        totalPages,
+        currentPage,
     });
 });
 const login = (req, res, next) => {
@@ -40,22 +44,18 @@ const profile = (req, res, next) => {
 };
 exports.profile = profile;
 exports.getFile = (0, CatchAsync_1.default)(async (req, res, next) => {
-    // 1. Get file data
     const file = await fileModel_1.File.findOne({ slug: req.params.slug });
-    // 2. Check if file exists
     if (!file) {
         return next(new AppError_1.default('There is no file with that name', 404));
     }
-    // 3. Check if user is logged in
     if (res.locals.user) {
-        // 4. Render the template with file data
         res.status(200).render('details', {
             title: `${file.title} - File server`,
             file,
         });
     }
     else {
-        return res.redirect('/login'); // If not logged in, redirect to login page
+        return res.redirect('/login');
     }
 });
 exports.searchFile = (0, CatchAsync_1.default)(async (req, res, next) => {
@@ -67,7 +67,7 @@ exports.searchFile = (0, CatchAsync_1.default)(async (req, res, next) => {
     }
     res.status(200).render('overview', {
         title: 'All Files',
-        files: searchResults, // Pass searchResults as 'files'
+        files: searchResults,
     });
 });
 //# sourceMappingURL=viewController.js.map

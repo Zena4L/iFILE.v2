@@ -74,7 +74,7 @@ block content
             .pagination.flex.items-center.justify-center.w-24.mx-auto
                 .flex.justify-center.items-center.space-x-4
                     button.prev-btn.border.rounded-md.bg-gray-100.px-2.py-1.text-3xl.leading-6.text-slate-400.transition.cursor-pointer.shadow-sm(class='hover:bg-gray-200 hover:text-slate-500') &lt;
-                    span.current-page.text-slate-500= currentPage
+                    span.current-page.text-slate-500 #{currentPage}
                     span.text-slate-500 /
-                    span.total-pages.text-slate-500= totalPages
+                    span.total-pages.text-slate-500 #{totalPages}
                     button.next-btn.border.rounded-md.bg-gray-100.px-2.py-1.text-3xl.leading-6.text-slate-400.transition.cursor-pointer.shadow-sm(class='hover:bg-gray-200 hover:text-slate-500') &gt;
