@@ -64,13 +64,20 @@ export const profile:RequestHandler = (req, res, next) => {
     console.log(keyword);
   
     if (searchResults.length === 0) {
-      return next(new AppError('No file found', 404));
+      return next(new AppError('No file with that Name', 404));
+    }
+    if (res.locals.user) {
+      res.status(200).render('details', {
+        title: 'All Files',
+        files: searchResults, 
+      });
+    }else{
+      res.status(200).render('overview', {
+        title: 'All Files',
+        files: searchResults, 
+      });
     }
   
-    res.status(200).render('overview', {
-      title: 'All Files',
-      files: searchResults, 
-    });
   });
   
   
