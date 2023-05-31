@@ -32,7 +32,8 @@ interface LoginResponse {
         }, 1500);
       }
     } catch (err: any) {
-      showAlert('fail','Signup fail, Try again');
+      // showAlert('fail','Signup fail, Try again');
+      console.log(err)
     }
   };
   

@@ -27,7 +27,8 @@ const signUp = async (name, email, password, passwordConfirm) => {
         }
     }
     catch (err) {
-        (0, alert_1.showAlert)('fail', 'Signup fail, Try again');
+        // showAlert('fail','Signup fail, Try again');
+        console.log(err);
     }
 };
 exports.default = signUp;

@@ -65,17 +65,9 @@ exports.searchFile = (0, CatchAsync_1.default)(async (req, res, next) => {
     if (searchResults.length === 0) {
         return next(new AppError_1.default('No file with that Name', 404));
     }
-    if (res.locals.user) {
-        res.status(200).render('details', {
-            title: 'All Files',
-            files: searchResults,
-        });
-    }
-    else {
-        res.status(200).render('overview', {
-            title: 'All Files',
-            files: searchResults,
-        });
-    }
+    res.status(200).render('overview', {
+        title: 'All Files',
+        files: searchResults,
+    });
 });
 //# sourceMappingURL=viewController.js.map
