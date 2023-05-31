@@ -43,6 +43,16 @@ export const profile:RequestHandler = (req, res, next) => {
       title: 'Your Profile',
     });
   }
+export const forgotpassword:RequestHandler = (req, res, next) => {
+    res.status(200).render('forgotpassword', {
+      title: 'forget password',
+    });
+  }
+export const resetpassword:RequestHandler = (req, res, next) => {
+    res.status(200).render('resetpass', {
+      title: 'Reset password',
+    });
+  }
   export const getFile: RequestHandler = catchAsync(async (req, res, next) => {
     const file = await File.findOne({ slug: req.params.slug })
     if (!file) {

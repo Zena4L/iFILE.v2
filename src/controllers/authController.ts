@@ -28,9 +28,6 @@ export const signUp: RequestHandler = catchAsync(async (req, res, next) => {
     const url = `${req.protocol}://${req.get('host')}/login`;
     const sendEmail = new Email(newUser,url);
     await sendEmail.sendWelcome();
-
-    // const token = new Tokinazation(newUser,res,201);
-    // token.createSendToken();
     res.status(200).json({
       status:'sucess',
       message:'new user',
@@ -123,6 +120,7 @@ export const forgotPassword:RequestHandler = catchAsync(async (req, res, next) =
       const resetURL = `${req.protocol}://${req.get(
         'host'
       )}/api/user/resetPassword/${resetToken}`;
+     
   
       await new Email(user, resetURL).sendResetPassword();
       res.status(200).json({

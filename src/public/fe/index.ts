@@ -6,11 +6,13 @@ import uploadFile from './upload';
 import download from './download';
 import emailDownload from './email';
 import sortBy from './sortBy';
+import passforgot from './forgotpass';
 
 
 const loginForm = document.querySelector('.form') as HTMLFormElement;
 const logoutBtn = document.querySelector('.logout') as HTMLFormElement
 const signupForm = document.querySelector('.signup') as HTMLFormElement;
+const passForgot = document.querySelector('.passforget') as HTMLFormElement;
 const userDataForm = document.querySelector('.user-data-from') as HTMLFormElement;
 const passwordForm = document.querySelector('.user-password-forms') as HTMLFormElement;
 const uploadForm = document.querySelector('.file-upload') as HTMLFormElement;
@@ -117,5 +119,11 @@ if(emailBtn){
   })
  } 
 
- 
+ if(passForgot){
+  passForgot.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    passforgot(email);
+  })
+ }
   

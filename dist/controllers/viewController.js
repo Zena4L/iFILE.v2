@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchFile = exports.getFile = exports.profile = exports.signup = exports.login = exports.overview = void 0;
+exports.searchFile = exports.getFile = exports.resetpassword = exports.forgotpassword = exports.profile = exports.signup = exports.login = exports.overview = void 0;
 const fileModel_1 = require("../models/fileModel");
 const CatchAsync_1 = __importDefault(require("../utils/CatchAsync"));
 const AppError_1 = __importDefault(require("../utils/AppError"));
@@ -43,6 +43,18 @@ const profile = (req, res, next) => {
     });
 };
 exports.profile = profile;
+const forgotpassword = (req, res, next) => {
+    res.status(200).render('forgotpassword', {
+        title: 'forget password',
+    });
+};
+exports.forgotpassword = forgotpassword;
+const resetpassword = (req, res, next) => {
+    res.status(200).render('resetpass', {
+        title: 'Reset password',
+    });
+};
+exports.resetpassword = resetpassword;
 exports.getFile = (0, CatchAsync_1.default)(async (req, res, next) => {
     const file = await fileModel_1.File.findOne({ slug: req.params.slug });
     if (!file) {

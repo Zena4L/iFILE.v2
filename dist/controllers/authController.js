@@ -45,8 +45,6 @@ exports.signUp = (0, CatchAsync_1.default)(async (req, res, next) => {
     const url = `${req.protocol}://${req.get('host')}/login`;
     const sendEmail = new Email_1.default(newUser, url);
     await sendEmail.sendWelcome();
-    // const token = new Tokinazation(newUser,res,201);
-    // token.createSendToken();
     res.status(200).json({
         status: 'sucess',
         message: 'new user',
