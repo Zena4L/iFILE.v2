@@ -25,12 +25,19 @@ export const signUp: RequestHandler = catchAsync(async (req, res, next) => {
       passwordConfirm,
     });
   
-    const url = `${req.protocol}://${req.get('host')}/`;
+    const url = `${req.protocol}://${req.get('host')}/login`;
     const sendEmail = new Email(newUser,url);
     await sendEmail.sendWelcome();
 
-    const token = new Tokinazation(newUser,res,201);
-    token.createSendToken();
+    // const token = new Tokinazation(newUser,res,201);
+    // token.createSendToken();
+    res.status(200).json({
+      status:'sucess',
+      message:'new user',
+      data:{
+        User:newUser
+      }
+    })
     
   });
   
@@ -106,7 +113,7 @@ export const protect:RequestHandler = catchAsync(async (req:userRequest, res:use
 export const forgotPassword:RequestHandler = catchAsync(async (req, res, next) => {
     // get email from user
     const {email} = req.body as loginRequest
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }) as IUser;
   
     if (!user) next(new AppError('No user with this email', 404));
     const resetToken = user?.createResetToken();
@@ -117,7 +124,7 @@ export const forgotPassword:RequestHandler = catchAsync(async (req, res, next) =
         'host'
       )}/api/user/resetPassword/${resetToken}`;
   
-      // await new Email(user, resetURL).sendResetPassword();
+      await new Email(user, resetURL).sendResetPassword();
       res.status(200).json({
         status: 'success',
         message: 'token sent successfully!',

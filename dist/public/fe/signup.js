@@ -18,10 +18,11 @@ const signUp = async (name, email, password, passwordConfirm) => {
                 'Content-Type': 'application/json',
             },
         });
-        if (res.data.status === "success") {
+        console.log(res);
+        if (res.data.status === "sucess") {
             (0, alert_1.showAlert)('success', 'Sign-up successful');
             setTimeout(() => {
-                window.location.href = '/';
+                window.location.href = '/login';
             }, 1500);
         }
     }

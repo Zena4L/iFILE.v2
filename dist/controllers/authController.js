@@ -42,11 +42,18 @@ exports.signUp = (0, CatchAsync_1.default)(async (req, res, next) => {
         password,
         passwordConfirm,
     });
-    const url = `${req.protocol}://${req.get('host')}/`;
+    const url = `${req.protocol}://${req.get('host')}/login`;
     const sendEmail = new Email_1.default(newUser, url);
     await sendEmail.sendWelcome();
-    const token = new Token_1.default(newUser, res, 201);
-    token.createSendToken();
+    // const token = new Tokinazation(newUser,res,201);
+    // token.createSendToken();
+    res.status(200).json({
+        status: 'sucess',
+        message: 'new user',
+        data: {
+            User: newUser
+        }
+    });
 });
 exports.login = (0, CatchAsync_1.default)(async (req, res, next) => {
     //get user based on email and password
@@ -119,7 +126,7 @@ exports.forgotPassword = (0, CatchAsync_1.default)(async (req, res, next) => {
     await (user === null || user === void 0 ? void 0 : user.save({ validateBeforeSave: false }));
     try {
         const resetURL = `${req.protocol}://${req.get('host')}/api/user/resetPassword/${resetToken}`;
-        // await new Email(user, resetURL).sendResetPassword();
+        await new Email_1.default(user, resetURL).sendResetPassword();
         res.status(200).json({
             status: 'success',
             message: 'token sent successfully!',

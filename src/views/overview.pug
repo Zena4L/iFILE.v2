@@ -15,13 +15,13 @@ block content
             if user 
                 span.pr-5.text-indigo-950.border-b-4.border-purple-950=`Welcome ${user.name.split(' ')[0]}`
             else
-                .buttom.gap-5.flex 
-                    a(href="/signup").group.rounded-xl.h-12.w-24.bg-indigo-950.font-bold.text-white.relative.overflow-hidden.text-center.items-center.pt-2 
-                        | signup
-                        .absolute.duration-300.inset-0.w-32.h-full.transition-all.scale-0.rounded-2xl(class='group-hover:scale-100 group-hover:bg-white/30')               
-                    a(href="/login").group.rounded-xl.h-12.w-24.bg-indigo-950.font-bold.text-white.relative.overflow-hidden.text-center.items-center.pt-2 
-                        | login 
-                        .absolute.duration-300.inset-0.w-32.h-full.transition-all.scale-0.rounded-2xl(class='group-hover:scale-100 group-hover:bg-white/30')               
+                .buttom.gap-5.flex.mr-5 
+                    a.p-2.border.border-black.text-2xl.rounded-lg.outline-none.shadow-lg.duration-200(href='/signup', class='hover:shadow-xl hover:rounded-3xl')
+                        | sign-up
+                        .absolute.duration-300.inset-0.w-32.h-full.transition-all.scale-0.rounded-2xl(class='group-hover:scale-100 group-hover:bg-white/30')
+                    a.p-2.border.border-black.text-2xl.rounded-lg.outline-none.shadow-lg.duration-200(href='/login', class='hover:shadow-xl hover:rounded-3xl')
+                        | login
+                        .absolute.duration-300.inset-0.w-32.h-full.transition-all.scale-0.rounded-2xl(class='group-hover:scale-100 group-hover:bg-white/30')              
         .mt-10
             .p-4
                 .bg-white.p-4.rounded-md

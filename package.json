@@ -4,7 +4,6 @@
   "description": "*END POINT* 1. Authentication     - POST signup [endpoint]({{url}}v1/api/users/signup)     - POST login [endpoint]({{url}}v1/api/users/login)     - POST forgot password [endpoint]({{url}}v1/api/users/forgotpassword)     - POST reset password [endpoint]({{url}}v1/api/users/resetpassword:token) <!-- ![snippet](Dev-Data/img/snippet.png) --> 2. User     - GET all Users [endpoint]({{url}}v1/api/users/)     - GET a User [endpoint]({{url}}v1/api/users/id)     - PATCH update a User [endpoint]({{url}}v1/api/users/updateme)     - DELETE delete a User [endpoint]({{url}}v1/api/users/deleteme) 2. Files     - GET all Files [endpoint]({{url}}v1/api/files/)     - GET a File [endpoint]({{url}}v1/api/file/:id)     - PATCH upload a file [endpoint]({{url}}v1/api/upload)     - GET download a file [endpoint]({{url}}v1/api/download)     - GET download a file via email [endpoint]({{url}}v1/api/email)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon dist/server.js",
     "prod": "NODE_ENV=production  dist/server.js",
     "css-watch": "postcss ./src/public/styles/tailwind.css -w -o ./dist/public/styles/style.css",
@@ -12,7 +11,8 @@
     "build:js": "webpack --config webpack.config.js",
     "watch:js": "webpack --config webpack.config.js --watch",
     "babel:build": "babel src -d dist",
-    "babel:watch": "babel src -d dist --watch"
+    "babel:watch": "babel src -d dist --watch",
+    "test": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/morgan": "^1.9.4",
     "@types/multer": "^1.4.7",
@@ -43,9 +44,12 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
+    "jest": "^29.5.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
+    "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "webpack": "^5.83.1",
     "webpack-cli": "^5.1.1"

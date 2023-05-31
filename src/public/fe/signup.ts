@@ -23,11 +23,12 @@ interface LoginResponse {
                 'Content-Type': 'application/json',
               },
             }
-          );          
-      if (res.data.status === "success") {
+          );       
+          console.log(res)   
+      if (res.data.status === "sucess") {
         showAlert('success', 'Sign-up successful');
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/login';
         }, 1500);
       }
     } catch (err: any) {

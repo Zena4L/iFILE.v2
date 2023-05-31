@@ -57,6 +57,7 @@ export const profile:RequestHandler = (req, res, next) => {
       return res.redirect('/login'); 
     }
   });
+ 
   export const searchFile: RequestHandler = catchAsync(async (req, res, next) => {
     const { keyword } = req.body;
     const searchResults = await File.find({ title: { $regex: `^.*${keyword}.*$`, $options: 'i' } });
