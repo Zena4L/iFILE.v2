@@ -27,8 +27,12 @@ const signUp = async (name, email, password, passwordConfirm) => {
         }
     }
     catch (err) {
-        // showAlert('fail','Signup fail, Try again');
-        console.log(err);
+        if (err.response.data.error.name === 'ValidationError') {
+            (0, alert_1.showAlert)('error', 'Password should be a minimum of 8 characters');
+        }
+        else {
+            (0, alert_1.showAlert)('error', 'Failed, Try Again later');
+        }
     }
 };
 exports.default = signUp;

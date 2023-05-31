@@ -66,7 +66,6 @@ export const profile:RequestHandler = (req, res, next) => {
     if (searchResults.length === 0) {
       return next(new AppError('No file with that Name', 404));
     }
-    
     res.status(200).render('overview', {
       title: 'All Files',
       files: searchResults, 
