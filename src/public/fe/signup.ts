@@ -33,12 +33,12 @@ interface LoginResponse {
       }
     } catch (err: any) {
 
-      if (err.response.data.error.name === 'ValidationError'){
-        showAlert('error','Password should be a minimum of 8 characters')
-      }else{
-        showAlert('error','Failed, Try Again later')
-      }
-      console.log(err);
+      // if (err.response.data.error.name === 'ValidationError'){
+      //   showAlert('error','Password should be a minimum of 8 characters')
+      // }else{
+      //   showAlert('error','Failed, Try Again later')
+      // }
+      showAlert('error','Password should be a minimum of 8 characters');
     }
   };
   

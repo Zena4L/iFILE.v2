@@ -27,13 +27,12 @@ const signUp = async (name, email, password, passwordConfirm) => {
         }
     }
     catch (err) {
-        if (err.response.data.error.name === 'ValidationError') {
-            (0, alert_1.showAlert)('error', 'Password should be a minimum of 8 characters');
-        }
-        else {
-            (0, alert_1.showAlert)('error', 'Failed, Try Again later');
-        }
-        console.log(err);
+        // if (err.response.data.error.name === 'ValidationError'){
+        //   showAlert('error','Password should be a minimum of 8 characters')
+        // }else{
+        //   showAlert('error','Failed, Try Again later')
+        // }
+        (0, alert_1.showAlert)('error', 'Password should be a minimum of 8 characters');
     }
 };
 exports.default = signUp;
