@@ -28,18 +28,17 @@ const passforgot = async (email) => {
     }
 };
 exports.passforgot = passforgot;
-const resetpass = async (password, passConfrim, token) => {
+const resetpass = async (password, passwordConfirm, token) => {
     try {
         const res = await axios_1.default.patch(`v1/api/users/resetpassword?token=${token}`, JSON.stringify({
             password,
-            passConfrim
+            passwordConfirm
         }), {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(res);
         if (res.data.status === "success") {
             (0, alert_1.showAlert)('success', 'Password set succesful');
             setTimeout(() => {

@@ -136,9 +136,7 @@ if(emailBtn){
     const passwordConfirm = (document.getElementById('password-confirm') as HTMLInputElement).value;
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token') as string;
-
-    console.log(password,passwordConfirm,token)
-    // resetpass(password,passwordConfirm,token)
+    resetpass(password,passwordConfirm,token)
 
   })
  }

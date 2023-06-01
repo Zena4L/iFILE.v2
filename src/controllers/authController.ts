@@ -124,7 +124,6 @@ export const forgotPassword:RequestHandler = catchAsync(async (req, res, next) =
       // await new Email(user, resetURL).sendResetPassword();
       const resetURL = new URL(`${req.protocol}://${req.get('host')}/resetpassword`);
       resetURL.searchParams.set('token', resetToken);
-
     // Use resetURL.href to get the complete URL string
     // Example: https://example.com/resetpassword?token=yourResetToken
       await new Email(user, resetURL.href).sendResetPassword();
