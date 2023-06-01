@@ -38,6 +38,7 @@ interface LoginResponse {
       }else{
         showAlert('error','Failed, Try Again later')
       }
+      console.log(err);
     }
   };
   

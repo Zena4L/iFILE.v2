@@ -33,6 +33,7 @@ const signUp = async (name, email, password, passwordConfirm) => {
         else {
             (0, alert_1.showAlert)('error', 'Failed, Try Again later');
         }
+        console.log(err);
     }
 };
 exports.default = signUp;
