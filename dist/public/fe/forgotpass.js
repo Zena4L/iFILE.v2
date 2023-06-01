@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.resetpass = exports.passforgot = void 0;
 const axios_1 = __importDefault(require("axios"));
 const alert_1 = require("./alert");
 const passforgot = async (email) => {
@@ -26,5 +27,30 @@ const passforgot = async (email) => {
         (0, alert_1.showAlert)('error', 'No user with this Email');
     }
 };
-exports.default = passforgot;
+exports.passforgot = passforgot;
+const resetpass = async (password, passConfrim, token) => {
+    try {
+        const res = await axios_1.default.patch(`v1/api/users/resetpassword?token=${token}`, JSON.stringify({
+            password,
+            passConfrim
+        }), {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(res);
+        if (res.data.status === "success") {
+            (0, alert_1.showAlert)('success', 'Password set succesful');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 1500);
+        }
+    }
+    catch (error) {
+        (0, alert_1.showAlert)('error', 'Something went wrong');
+        // console.log(error)
+    }
+};
+exports.resetpass = resetpass;
 //# sourceMappingURL=forgotpass.js.map

@@ -8,7 +8,7 @@ interface LoginResponse {
       message: string;
     };
   }
-const passforgot = async (email: string): Promise<void> => {
+export const passforgot = async (email: string): Promise<void> => {
     try {
       const res: AxiosResponse<LoginResponse> = await axios.post(
         'v1/api/users/forgotpassword',
@@ -33,4 +33,31 @@ const passforgot = async (email: string): Promise<void> => {
     }
   };
 
-  export default passforgot;
+  export const resetpass = async (password: string, passConfrim: string, token: string) => {
+    try {
+      const res: AxiosResponse<LoginResponse> = await axios.patch(
+        `v1/api/users/resetpassword?token=${token}`,
+        JSON.stringify({
+          password,
+          passConfrim
+        }),
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log(res);
+      if (res.data.status === "success") {
+        showAlert('success', 'Password set succesful');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1500);
+      }
+    } catch (error:any) {
+      showAlert('error', 'Something went wrong');
+      // console.log(error)
+    }
+  };
+  

@@ -123,8 +123,15 @@ exports.forgotPassword = (0, CatchAsync_1.default)(async (req, res, next) => {
     const resetToken = user === null || user === void 0 ? void 0 : user.createResetToken();
     await (user === null || user === void 0 ? void 0 : user.save({ validateBeforeSave: false }));
     try {
-        const resetURL = `${req.protocol}://${req.get('host')}/api/user/resetPassword/${resetToken}`;
-        await new Email_1.default(user, resetURL).sendResetPassword();
+        // const resetURL = `${req.protocol}://${req.get(
+        //   'host'
+        // )}/resetpassword/${resetToken}`;
+        // await new Email(user, resetURL).sendResetPassword();
+        const resetURL = new URL(`${req.protocol}://${req.get('host')}/resetpassword`);
+        resetURL.searchParams.set('token', resetToken);
+        // Use resetURL.href to get the complete URL string
+        // Example: https://example.com/resetpassword?token=yourResetToken
+        await new Email_1.default(user, resetURL.href).sendResetPassword();
         res.status(200).json({
             status: 'success',
             message: 'token sent successfully!',
@@ -140,30 +147,31 @@ exports.forgotPassword = (0, CatchAsync_1.default)(async (req, res, next) => {
     }
 });
 exports.resetPassword = (0, CatchAsync_1.default)(async (req, res, next) => {
-    //get token from url
-    const hashedToken = crypto
-        .createHash('sha256')
-        .update(req.params.token)
-        .digest('hex');
+    // Get token from query parameters
+    const token = req.query.token;
+    // Verify the token and find the user
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
     const user = await userModel_1.User.findOne({
         passwordResetToken: hashedToken,
         passwordResetExpires: { $gt: new Date(Date.now()) },
     });
     if (!user) {
-        next(new AppError_1.default('Token is invalid or has expire', 400));
+        return next(new AppError_1.default('Token is invalid or has expired', 400));
     }
-    else {
-        const { password, passwordConfirm } = req.body;
-        user.password = password;
-        user.passwordConfirm = passwordConfirm;
-        user.passwordResetToken = undefined;
-        user.passwordResetExpires = undefined;
-        await user.save();
-    }
-    if (user) {
-        const token = new Token_1.default(user, res, 200);
-        token.createSendToken();
-    }
+    // Update the user's password and reset token
+    const { password, passwordConfirm } = req.body;
+    user.password = password;
+    user.passwordConfirm = passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    const freshUser = await user.save();
+    res.status(200).json({
+        status: 'success',
+        message: 'Password reset successful',
+        data: {
+            user: freshUser,
+        },
+    });
 });
 exports.isLoggedIn = (0, CatchAsync_1.default)(async (req, res, next) => {
     if (req.cookies.jwt) {

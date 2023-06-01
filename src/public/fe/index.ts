@@ -6,12 +6,13 @@ import uploadFile from './upload';
 import download from './download';
 import emailDownload from './email';
 import sortBy from './sortBy';
-import passforgot from './forgotpass';
+import {passforgot, resetpass} from './forgotpass';
 
 
 const loginForm = document.querySelector('.form') as HTMLFormElement;
 const logoutBtn = document.querySelector('.logout') as HTMLFormElement
 const signupForm = document.querySelector('.signup') as HTMLFormElement;
+const resetPass = document.querySelector('.reset-pass') as HTMLFormElement;
 const passForgot = document.querySelector('.passforget') as HTMLFormElement;
 const userDataForm = document.querySelector('.user-data-from') as HTMLFormElement;
 const passwordForm = document.querySelector('.user-password-forms') as HTMLFormElement;
@@ -126,4 +127,18 @@ if(emailBtn){
     passforgot(email);
   })
  }
-  
+
+
+ if(resetPass){
+  resetPass.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const passwordConfirm = (document.getElementById('password-confirm') as HTMLInputElement).value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token') as string;
+
+    console.log(password,passwordConfirm,token)
+    // resetpass(password,passwordConfirm,token)
+
+  })
+ }
