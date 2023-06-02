@@ -48,7 +48,6 @@ const resetpass = async (password, passwordConfirm, token) => {
     }
     catch (error) {
         (0, alert_1.showAlert)('error', 'Something went wrong');
-        // console.log(error)
     }
 };
 exports.resetpass = resetpass;

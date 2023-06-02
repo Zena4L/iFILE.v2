@@ -16,7 +16,7 @@ const updateSettings = async (data, type) => {
         if (res.data.status === 'success') {
             alert('Update Successful!');
             setTimeout(() => {
-                window.location.href = '/';
+                window.location.href = '/login';
             }, 1500);
         }
     }

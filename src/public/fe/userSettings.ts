@@ -12,7 +12,7 @@ const updateSettings = async (data: any, type: string): Promise<void> => {
       if (res.data.status === 'success') {
         alert('Update Successful!');
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/login';
         }, 1500);
       }
     } catch (err: any) {

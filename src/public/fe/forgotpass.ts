@@ -56,7 +56,6 @@ export const passforgot = async (email: string): Promise<void> => {
     }
   }catch(error:any) {
       showAlert('error', 'Something went wrong');
-      // console.log(error)
     }
   };
   

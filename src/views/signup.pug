@@ -7,8 +7,8 @@ block content
             input#name.block.border.border-grey-light.w-full.p-3.rounded.mb-4(type='text', name='fullname', placeholder='Full Name')
             input#email.block.border.border-grey-light.w-full.p-3.rounded.mb-4(type='text', name='email', placeholder='Email')
             input#password.block.border.border-grey-light.w-full.p-3.rounded.mb-4(type='password', name='password', placeholder='Password')
-            input#password-confirm.block.border.border-grey-light.w-full.p-3.rounded.mb-4(type='password', name='confirm_password', placeholder='Confirm Password')
-            button.w-full.py-4.bg-blue-400.w-full.rounded.text-blue-50.font-bold.my-1(type='submit', class='hover:bg-blue-700 focus:outline-none') Create Account
+            input#password-confirm.block.border.border-grey-light.w-full.p-3.rounded.mb-4(type='password', name='confirm_password', placeholder='Confirm Password', required , minlength='8')
+            button.w-full.py-4.bg-blue-400.w-full.rounded.text-blue-50.font-bold.my-1(type='submit', class='hover:bg-blue-700 focus:outline-none', required ,minlength='8') Create Account
             .text-center.text-sm.text-grey-dark.mt-4
                 | By signing up, you agree to the 
                 a.no-underline.border-b.border-grey-dark.text-grey-dark(href='#')
